@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ✏️ EDITA: título y descripción (lo que aparece en Google) -->
+  <title>Elefante Amarillo | Cafetería de especialidad</title>
+  <meta name="description" content="Café de especialidad, postres caseros y un lugar para quedarse.">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- 1. BARRA DE NAVEGACIÓN -->
+  <header class="nav">
+    <a href="#inicio" class="logo">☕ <span id="brand">Elefante Amarillo</span></a>
+    <nav id="links">
+      <a href="#menu">Menú</a>
+      <a href="#historia">Historia</a>
+      <a href="#galeria">Galería</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button id="theme" aria-label="Cambiar modo">🌙</button>
+    <button id="burger" aria-label="Abrir menú" aria-controls="links" aria-expanded="false">☰</button>
+  </header>
+
+  <!-- 2. INICIO (HERO) -->
+  <section id="inicio" class="hero">
+    <div class="steam"><i></i><i></i><i></i></div>
+    <p class="eyebrow">Café de especialidad</p>
+    <!-- ✏️ EDITA: titular y subtítulo -->
+    <h1>Somos Unicos<br>una familia</h1>
+    <p class="lead">Cada plato, café o postre su principal ingrediente es el amor de cada uno de nostros.</p>
+    <div class="cta">
+      <a href="#menu" class="btn">Ver el menú</a>
+      <a href="#ubicacion" class="btn ghost">Cómo llegar</a>
+    </div>
+  </section>
+
+  <!-- 3. MENÚ (se genera desde java.js) -->
+  <section id="menu" class="wrap">
+    <h2>Nuestro menú</h2>
+    <div id="tabs" class="tabs" role="tablist" aria-label="Categorías del menú"></div>
+    <div id="grid" class="grid" role="tabpanel" aria-live="polite"></div>
+  </section>
+
+  <!-- 4. HISTORIA (línea de tiempo) -->
+  <section id="historia" class="wrap alt">
+    <h2>Nuestra historia</h2>
+    <div class="timeline">
+      <!-- ✏️ EDITA: copia un bloque <div class="step"> para añadir más -->
+      <div class="step reveal"><b>2018</b>
+        <p>Nace el sueño: un carrito de café en el mercado local.</p>
+      </div>
+      <div class="step reveal"><b>2020</b>
+        <p>Abrimos nuestro primer local con tostado propio.</p>
+      </div>
+      <div class="step reveal"><b>2023</b>
+        <p>Trabajamos directo con pequeños productores.</p>
+      </div>
+      <div class="step reveal"><b>Hoy</b>
+        <p>Un espacio acogedor para trabajar, charlar y disfrutar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. GALERÍA -->
+  <section id="galeria" class="wrap">
+    <h2>Galería</h2>
+    <!-- ✏️ EDITA: cambia los emojis por fotos: <img src="img/foto1.jpg" alt="..."> -->
+    <div class="gallery">
+      <div class="ph g1">☕</div>
+      <div class="ph g2">🥐</div>
+      <div class="ph g3">🍰</div>
+      <div class="ph g4">🫘</div>
+      <div class="ph g5">🧋</div>
+      <div class="ph g6">🪴</div>
+    </div>
+  </section>
+
+  <!-- 6. UBICACIÓN Y HORARIOS -->
+  <section id="ubicacion" class="wrap alt">
+    <h2>Ubicación y horarios</h2>
+    <div class="two">
+      <div>
+        <h3>Horarios</h3>
+        <ul id="hours" class="hours"></ul>
+      </div>
+      <div id="branches" class="branches" aria-label="Sucursales"></div>
+    </div>
+  </section>
+
+  <!-- 7. CONTACTO -->
+  <section id="contacto" class="wrap">
+    <h2>Escríbenos</h2>
+    <div class="form">
+      <input id="f-name" placeholder="Tu nombre">
+      <textarea id="f-msg" rows="4" placeholder="Tu mensaje o pedido"></textarea>
+      <button id="send" class="btn">Enviar por WhatsApp</button>
+    </div>
+  </section>
+
+  <!-- 8. FOOTER -->
+  <footer>
+    <p>© <span id="year"></span> <span id="brand2"></span> · Hecho el amor de cada uno de nosotros</p>
+    <p class="social-links">
+      <a id="ig" target="_blank" rel="noopener">Instagram</a>
+      <a id="fb" target="_blank" rel="noopener">Facebook</a>
+    </p>
+  </footer>
+
+  <!-- 9. BOTÓN FLOTANTE DE WHATSAPP -->
+  <!-- 10. CARRITO DE COMPRAS -->
+  <button id="cart-btn" class="cart-btn" aria-label="Abrir carrito">🛒 <span id="cart-count">0</span></button>
+  <div id="overlay" class="overlay"></div>
+  <aside id="cart" class="cart" aria-label="Carrito">
+    <div class="cart-head">
+      <h3>Tu pedido</h3><button id="cart-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-foot">
+      <div class="total"><span>Total</span><b id="cart-total"></b></div>
+      <input id="o-name" placeholder="Tu nombre">
+      <select id="o-local" required aria-label="Elige el local"></select>
+      <select id="o-type">
+        <option value="Recoger en tienda">Recoger en tienda</option>
+        <option value="A domicilio">A domicilio</option>
+      </select>
+      <input id="o-addr" placeholder="Dirección de entrega" hidden>
+      <textarea id="o-note" rows="2" placeholder="Notas (sin azúcar, leche de avena...)"></textarea>
+      <p class="payment-note">El pago de pedidos en línea es por transferencia bancaria.</p>
+      <div class="transfer-details" id="transfer-details" aria-label="Datos para transferencia bancaria"></div>
+      <p class="payment-note">Se abrirá WhatsApp con el pedido listo. Para enviarlo, presiona Enviar en WhatsApp.</p>
+      <button id="o-send" class="btn">Continuar a WhatsApp</button>
+      <button id="o-clear" class="link">Vaciar carrito</button>
+    </div>
+  </aside>
+
+  <a id="wa" class="wa" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+  <script src="java.js"></script>
+</body>
+
+</html>
