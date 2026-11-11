@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <!-- ✏️ EDITA: título y descripción (lo que aparece en Google) -->
   <title>Elefante Amarillo | Cafetería de especialidad</title>
   <meta name="description" content="Café de especialidad, postres caseros y un lugar para quedarse.">
@@ -121,6 +122,14 @@
     </div>
     <div id="cart-items" class="cart-items"></div>
     <div class="cart-foot">
+      <div class="total"><span>Subtotal</span><b id="cart-subtotal"></b></div>
+      <label class="tip-label" for="o-tip">¿Deseas agregar propina?</label>
+      <select id="o-tip" aria-label="Propina">
+        <option value="0">Sin propina</option>
+        <option value="5">5%</option>
+        <option value="10">10%</option>
+      </select>
+      <div class="total"><span>Propina</span><b id="cart-tip"></b></div>
       <div class="total"><span>Total</span><b id="cart-total"></b></div>
       <input id="o-name" placeholder="Tu nombre">
       <select id="o-local" required aria-label="Elige el local"></select>

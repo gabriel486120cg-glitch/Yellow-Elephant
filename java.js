@@ -14,8 +14,9 @@ const CONFIG = {
     },
     categorias: [
         "Desayunos", "Platos fuertes", "Cafés calientes", "Infusiones",
-        "Drinks calientes", "Cafés fríos", "Smoothies", "Limonadas", "Postres"
+        "Drinks calientes", "Cafés fríos", "Smoothies", "Limonadas", "Postres", "Promociones"
     ],
+    promociones: "No hay promociones publicadas por el momento. Escríbenos por WhatsApp para consultar las promociones disponibles.",
     locales: [
         {
             nombre: "Elefante Sur",
@@ -173,6 +174,15 @@ const cats = CONFIG.categorias;
 function pintarMenu(cat) {
     C$("tabs").innerHTML = cats.map(c =>
         `<button class="tab ${c === cat ? 'on' : ''}" data-c="${c}" role="tab" aria-selected="${c === cat}">${c}</button>`).join("");
+    if (cat === "Promociones") {
+        const consulta = encodeURIComponent("Hola, quisiera consultar las promociones disponibles.");
+        C$("grid").innerHTML = `<article class="card promotion-card">
+            <div class="e">🎉</div><h3>Promociones</h3>
+            <p>${CONFIG.promociones}</p>
+            <a class="btn promotion-link" href="https://wa.me/${numeroWhatsApp}?text=${consulta}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        </article>`;
+        return;
+    }
     const productos = CONFIG.menu
         .map((p, i) => ({ ...p, i }))
         .filter(p => p.cat === cat);
@@ -237,128 +247,130 @@ C$("send").onclick = () => {
 };
 
 // Quejas y sugerencias (se conservan en este navegador)
-const FEEDBACK_STORAGE_KEY = "elefante-amarillo-feedback-v1";
-let feedbackEntries = [];
-let feedbackStorageReady = true;
-let feedbackRating = 0;
+if ($("feedback-form")) {
+    const FEEDBACK_STORAGE_KEY = "elefante-amarillo-feedback-v1";
+    let feedbackEntries = [];
+    let feedbackStorageReady = true;
+    let feedbackRating = 0;
 
-function mostrarEstadoFeedback(message, isError = false) {
-    const status = $("feedback-status");
-    status.textContent = message;
-    status.classList.toggle("error", isError);
-}
-
-function pintarFeedback() {
-    $("feedback-count").textContent = feedbackEntries.length;
-    const container = $("feedback-entries");
-    container.replaceChildren();
-
-    if (!feedbackEntries.length) {
-        const empty = document.createElement("p");
-        empty.className = "feedback-empty";
-        empty.textContent = "Todavía no hay opiniones. ¡Sé la primera persona en compartir la tuya!";
-        container.append(empty);
-        return;
+    function mostrarEstadoFeedback(message, isError = false) {
+        const status = $("feedback-status");
+        status.textContent = message;
+        status.classList.toggle("error", isError);
     }
 
-    [...feedbackEntries].reverse().forEach(entry => {
-        const card = document.createElement("article");
-        card.className = "feedback-entry";
+    function pintarFeedback() {
+        $("feedback-count").textContent = feedbackEntries.length;
+        const container = $("feedback-entries");
+        container.replaceChildren();
 
-        const head = document.createElement("div");
-        head.className = "feedback-entry-head";
-        const author = document.createElement("strong");
-        author.textContent = entry.name || "Cliente";
-        const stars = document.createElement("span");
-        stars.className = "feedback-entry-stars";
-        stars.setAttribute("aria-label", `${entry.rating} de 5 estrellas`);
-        stars.textContent = `${"★".repeat(entry.rating)}${"☆".repeat(5 - entry.rating)}`;
-        head.append(author, stars);
-
-        const date = document.createElement("time");
-        date.className = "feedback-entry-date";
-        date.dateTime = entry.createdAt;
-        date.textContent = new Date(entry.createdAt).toLocaleString("es-NI");
-
-        const comment = document.createElement("p");
-        comment.className = "feedback-entry-comment";
-        comment.textContent = entry.comment;
-        card.append(head, date, comment);
-        container.append(card);
-    });
-}
-
-try {
-    const savedFeedback = localStorage.getItem(FEEDBACK_STORAGE_KEY);
-    if (savedFeedback) {
-        const parsedFeedback = JSON.parse(savedFeedback);
-        if (!Array.isArray(parsedFeedback) || parsedFeedback.some(entry =>
-            !entry || typeof entry.name !== "string" || typeof entry.comment !== "string" ||
-            !Number.isInteger(entry.rating) || entry.rating < 1 || entry.rating > 5 ||
-            typeof entry.createdAt !== "string")) {
-            throw new Error("Los datos guardados no tienen el formato esperado.");
+        if (!feedbackEntries.length) {
+            const empty = document.createElement("p");
+            empty.className = "feedback-empty";
+            empty.textContent = "Todavía no hay opiniones. ¡Sé la primera persona en compartir la tuya!";
+            container.append(empty);
+            return;
         }
-        feedbackEntries = parsedFeedback;
-    }
-    pintarFeedback();
-} catch (error) {
-    feedbackStorageReady = false;
-    $("feedback-submit").disabled = true;
-    mostrarEstadoFeedback("No se pudieron leer las opiniones guardadas. No se aceptarán nuevos registros para proteger esos datos.", true);
-    console.error("No se pudieron cargar las opiniones guardadas:", error);
-}
 
-$("feedback-rating").addEventListener("click", event => {
-    const star = event.target.closest("[data-rating]");
-    if (!star) return;
-    feedbackRating = Number(star.dataset.rating);
-    $("feedback-rating").querySelectorAll(".star").forEach(button => {
-        const selected = Number(button.dataset.rating) <= feedbackRating;
-        button.classList.toggle("selected", selected);
-        button.setAttribute("aria-pressed", String(Number(button.dataset.rating) === feedbackRating));
-    });
-    mostrarEstadoFeedback("");
-});
+        [...feedbackEntries].reverse().forEach(entry => {
+            const card = document.createElement("article");
+            card.className = "feedback-entry";
 
-$("feedback-form").addEventListener("submit", event => {
-    event.preventDefault();
-    if (!feedbackStorageReady) return;
-    if (!feedbackRating) {
-        mostrarEstadoFeedback("Selecciona una calificación de 1 a 5 estrellas.", true);
-        return;
+            const head = document.createElement("div");
+            head.className = "feedback-entry-head";
+            const author = document.createElement("strong");
+            author.textContent = entry.name || "Cliente";
+            const stars = document.createElement("span");
+            stars.className = "feedback-entry-stars";
+            stars.setAttribute("aria-label", `${entry.rating} de 5 estrellas`);
+            stars.textContent = `${"★".repeat(entry.rating)}${"☆".repeat(5 - entry.rating)}`;
+            head.append(author, stars);
+
+            const date = document.createElement("time");
+            date.className = "feedback-entry-date";
+            date.dateTime = entry.createdAt;
+            date.textContent = new Date(entry.createdAt).toLocaleString("es-NI");
+
+            const comment = document.createElement("p");
+            comment.className = "feedback-entry-comment";
+            comment.textContent = entry.comment;
+            card.append(head, date, comment);
+            container.append(card);
+        });
     }
 
-    const entry = {
-        name: $("feedback-name").value.trim(),
-        rating: feedbackRating,
-        comment: $("feedback-comment").value.trim(),
-        createdAt: new Date().toISOString()
-    };
-    if (!entry.comment) {
-        $("feedback-comment").focus();
-        mostrarEstadoFeedback("Escribe tu comentario antes de guardar.", true);
-        return;
-    }
-
-    const updatedEntries = [...feedbackEntries, entry];
     try {
-        localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(updatedEntries));
+        const savedFeedback = localStorage.getItem(FEEDBACK_STORAGE_KEY);
+        if (savedFeedback) {
+            const parsedFeedback = JSON.parse(savedFeedback);
+            if (!Array.isArray(parsedFeedback) || parsedFeedback.some(entry =>
+                !entry || typeof entry.name !== "string" || typeof entry.comment !== "string" ||
+                !Number.isInteger(entry.rating) || entry.rating < 1 || entry.rating > 5 ||
+                typeof entry.createdAt !== "string")) {
+                throw new Error("Los datos guardados no tienen el formato esperado.");
+            }
+            feedbackEntries = parsedFeedback;
+        }
+        pintarFeedback();
     } catch (error) {
-        mostrarEstadoFeedback("No se pudo guardar la opinión en este navegador. Inténtalo de nuevo.", true);
-        console.error("No se pudo guardar la opinión:", error);
-        return;
+        feedbackStorageReady = false;
+        $("feedback-submit").disabled = true;
+        mostrarEstadoFeedback("No se pudieron leer las opiniones guardadas. No se aceptarán nuevos registros para proteger esos datos.", true);
+        console.error("No se pudieron cargar las opiniones guardadas:", error);
     }
 
-    feedbackEntries = updatedEntries;
-    pintarFeedback();
-    $("feedback-form").reset();
-    feedbackRating = 0;
-    $("feedback-rating").querySelectorAll(".star").forEach(button => {
-        button.classList.remove("selected");
-        button.setAttribute("aria-pressed", "false");
+    $("feedback-rating").addEventListener("click", event => {
+        const star = event.target.closest("[data-rating]");
+        if (!star) return;
+        feedbackRating = Number(star.dataset.rating);
+        $("feedback-rating").querySelectorAll(".star").forEach(button => {
+            const selected = Number(button.dataset.rating) <= feedbackRating;
+            button.classList.toggle("selected", selected);
+            button.setAttribute("aria-pressed", String(Number(button.dataset.rating) === feedbackRating));
+        });
+        mostrarEstadoFeedback("");
     });
-    mostrarEstadoFeedback("¡Gracias! Tu opinión quedó guardada en este navegador.");
-});
+
+    $("feedback-form").addEventListener("submit", event => {
+        event.preventDefault();
+        if (!feedbackStorageReady) return;
+        if (!feedbackRating) {
+            mostrarEstadoFeedback("Selecciona una calificación de 1 a 5 estrellas.", true);
+            return;
+        }
+
+        const entry = {
+            name: $("feedback-name").value.trim(),
+            rating: feedbackRating,
+            comment: $("feedback-comment").value.trim(),
+            createdAt: new Date().toISOString()
+        };
+        if (!entry.comment) {
+            $("feedback-comment").focus();
+            mostrarEstadoFeedback("Escribe tu comentario antes de guardar.", true);
+            return;
+        }
+
+        const updatedEntries = [...feedbackEntries, entry];
+        try {
+            localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(updatedEntries));
+        } catch (error) {
+            mostrarEstadoFeedback("No se pudo guardar la opinión en este navegador. Inténtalo de nuevo.", true);
+            console.error("No se pudo guardar la opinión:", error);
+            return;
+        }
+
+        feedbackEntries = updatedEntries;
+        pintarFeedback();
+        $("feedback-form").reset();
+        feedbackRating = 0;
+        $("feedback-rating").querySelectorAll(".star").forEach(button => {
+            button.classList.remove("selected");
+            button.setAttribute("aria-pressed", "false");
+        });
+        mostrarEstadoFeedback("¡Gracias! Tu opinión quedó guardada en este navegador.");
+    });
+}
 
 
 /* ==========================================================
@@ -372,20 +384,25 @@ const detalleProducto = clave => {
     const producto = CONFIG.menu[indice];
     if (!producto) return null;
     const variante = opcion >= 0 ? producto.variantes && producto.variantes[opcion] : null;
-    return { producto, variante, precio: variante ? variante.precio : producto.precio,
-        nombre: variante ? `${producto.nombre} (${variante.nombre})` : producto.nombre };
+    return {
+        producto, variante, precio: variante ? variante.precio : producto.precio,
+        nombre: variante ? `${producto.nombre} (${variante.nombre})` : producto.nombre
+    };
 };
 function pintarCarrito() {
     const ids = Object.keys(carrito).filter(i => detalleProducto(i) && carrito[i] > 0);
-    let total = 0, cuenta = 0;
+    let subtotal = 0, cuenta = 0;
     $("cart-items").innerHTML = ids.length ? ids.map(i => {
         const { producto, precio: precioUnitario, nombre } = detalleProducto(i), q = carrito[i];
-        total += precioUnitario * q; cuenta += q;
+        subtotal += precioUnitario * q; cuenta += q;
         return `<div class="row"><span style="font-size:1.8rem">${producto.emoji}</span>
         <div class="nm">${nombre}<small>${precio(precioUnitario)} c/u</small></div>
         <div class="qty"><button data-m="${i}">−</button><b>${q}</b><button data-p="${i}">+</button></div></div>`;
     }).join("") : `<p class="empty">Tu carrito está vacío ☕<br>Agrega algo del menú.</p>`;
-    $("cart-total").textContent = precio(total);
+    const propina = calcularPropina(subtotal);
+    $("cart-subtotal").textContent = precio(subtotal);
+    $("cart-tip").textContent = precio(propina);
+    $("cart-total").textContent = precio(subtotal + propina);
     $("cart-count").textContent = cuenta;
     try { localStorage.setItem("carrito-v2", JSON.stringify(carrito)); } catch (e) { }
 }
@@ -394,6 +411,8 @@ function cambiar(clave, d) {
     if (!carrito[clave]) delete carrito[clave];
     pintarCarrito();
 }
+const porcentajePropina = () => Number($("o-tip").value) || 0;
+const calcularPropina = subtotal => Math.round(subtotal * porcentajePropina() / 100);
 function abrir(v) {
     C$("cart").classList.toggle("open", v);
     $("overlay").classList.toggle("on", v);
@@ -414,6 +433,7 @@ $("cart-items").addEventListener("click", e => {
 $("cart-btn").onclick = () => abrir(true);
 $("cart-close").onclick = $("overlay").onclick = () => abrir(false);
 $("o-clear").onclick = () => { carrito = {}; pintarCarrito(); };
+$("o-tip").onchange = pintarCarrito;
 $("o-type").onchange = () => { $("o-addr").hidden = $("o-type").value !== "A domicilio"; };
 
 // Enviar el pedido al WhatsApp del negocio
@@ -424,12 +444,15 @@ $("o-send").onclick = () => {
     const local = CONFIG.locales[Number($("o-local").value)];
     const domicilio = $("o-type").value === "A domicilio";
     if (domicilio && !$("o-addr").value.trim()) return alert("Escribe la dirección de entrega");
-    let total = 0;
+    let subtotal = 0;
     const lineas = ids.map(i => {
         const { precio: precioUnitario, nombre } = detalleProducto(i), q = carrito[i];
-        total += precioUnitario * q;
+        subtotal += precioUnitario * q;
         return `• ${q} x ${nombre} — ${precio(precioUnitario * q)}`;
     });
+    const porcentaje = porcentajePropina();
+    const propina = calcularPropina(subtotal);
+    const total = subtotal + propina;
     const msg = [`☕ *Nuevo pedido — ${CONFIG.nombre}*`,
     `🏬 Local: ${local.nombre}`,
     `👤 Cliente: ${$("o-name").value.trim() || "Sin nombre"}`,
@@ -438,7 +461,9 @@ $("o-send").onclick = () => {
     `🏦 Banco: ${CONFIG.transferencia.banco} — ${CONFIG.transferencia.moneda}`,
     `🔢 Número de cuenta: ${CONFIG.transferencia.cuenta}`,
     domicilio ? `📍 Dirección: ${$("o-addr").value.trim()}` : "",
-        "", ...lineas, "", `💰 *Total: ${precio(total)}*`,
+        "", ...lineas, "", `Subtotal: ${precio(subtotal)}`,
+    `Propina${porcentaje ? ` (${porcentaje}%)` : ""}: ${precio(propina)}`,
+    `💰 *Total: ${precio(total)}*`,
     $("o-note").value.trim() ? `📝 Notas: ${$("o-note").value.trim()}` : ""
     ].filter((l, k, a) => l !== "" || (a[k - 1] !== "" && k)).join("\n");
     abrirWhatsApp(msg);
