@@ -26,11 +26,15 @@ alter table public.opiniones
 
 alter table public.opiniones enable row level security;
 
--- El formulario público solo puede insertar los campos que proporciona el cliente.
--- No puede leer opiniones ni cambiar su fecha, identificador o estado de lectura.
+-- El formulario público puede insertar opiniones y leer solo tipo, mensaje y fecha.
+-- Los nombres, contactos y el estado de lectura permanecen privados.
 revoke all on table public.opiniones from public, anon, authenticated;
 grant usage on schema public to anon, authenticated;
 grant insert (tipo, nombre, contacto, mensaje)
+  on table public.opiniones to anon, authenticated;
+revoke select (id, nombre, contacto, leido)
+  on table public.opiniones from public, anon, authenticated;
+grant select (created_at, tipo, mensaje)
   on table public.opiniones to anon, authenticated;
 
 drop policy if exists "Cualquiera puede enviar opiniones" on public.opiniones;
@@ -39,6 +43,13 @@ create policy "Cualquiera puede enviar opiniones"
   for insert
   to anon, authenticated
   with check (true);
+
+drop policy if exists "Cualquiera puede ver opiniones públicas" on public.opiniones;
+create policy "Cualquiera puede ver opiniones públicas"
+  on public.opiniones
+  for select
+  to anon, authenticated
+  using (true);
 
 -- En java.js configura la URL del proyecto y la clave pública anon.
 -- Nunca uses aquí ni en la web la clave secreta service_role.

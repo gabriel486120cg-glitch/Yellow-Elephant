@@ -7,8 +7,8 @@ const CONFIG = {
     instagram: "https://www.instagram.com/elefanteamarillonicaragua?vrfl=OW9zeHBzM3JnNDZ1",
     facebook: "https://www.facebook.com/share/1FhHpvQw1k/",
     moneda: "C$",
-    supabaseUrl: "https://TU-PROJECT-REF.supabase.co",
-    supabaseAnonKey: "PEGA_AQUI_TU_ANON_PUBLIC_KEY",
+    supabaseUrl: "https://glvaybicxmgxxeszsvzz.supabase.co",
+    supabaseAnonKey: "sb_publishable_cBKx25c4r5_0udP70yJv4g_mtYuTBq4",
     transferencia: {
         banco: "BAC",
         cuenta: "368499471",
@@ -168,10 +168,15 @@ const translations = {
         askPromotions: "Hola, quisiera consultar las promociones disponibles.", consultWhatsApp: "Consultar por WhatsApp",
         glutenFree: "Consulta disponibilidad. Opciones gluten free.",
         comingSoon: "Próximamente agregaremos productos a esta categoría.",
-        useLocationError: "No se pudo obtener tu ubicación. Revisa los permisos de ubicación e inténtalo de nuevo.",
+        useLocationError: "No se pudo obtener tu ubicación. Puedes escribir la dirección manualmente.",
         locationUnsupported: "Tu navegador no permite compartir la ubicación. Puedes escribir la dirección manualmente.",
         locationSecure: "Para compartir la ubicación, abre la web con HTTPS o desde localhost.",
-        locationFound: "Ubicación agregada. Puedes editar la dirección antes de enviar el pedido.",
+        locationFound: "Ubicación obtenida. Confirma que el punto sea correcto antes de continuar.",
+        locationConfirmNeeded: "Confirma la ubicación para incluir las coordenadas en el pedido.",
+        locationConfirmed: "Ubicación confirmada.",
+        locationInvalid: "El navegador devolvió coordenadas inválidas. Puedes escribir la dirección manualmente.",
+        confirmDeliveryLocation: "Confirmo que esta ubicación es correcta",
+        confirmLocationError: "Confirma la ubicación obtenida antes de continuar.",
         gettingLocation: "Obteniendo tu ubicación…", chooseBranchError: "Elige el local para tu pedido",
         emptyOrderError: "Agrega al menos un producto 🙂", addressError: "Escribe la dirección o comparte tu ubicación",
         noName: "Sin nombre", orderTitle: "Nuevo pedido", customer: "Cliente", orderType: "Tipo",
@@ -185,6 +190,9 @@ const translations = {
         yourNameOptional: "Nombre (opcional)", contactOptional: "Teléfono o correo (opcional)",
         contactPlaceholder: "Teléfono o correo", yourOpinion: "Tu opinión",
         opinionPlaceholder: "Escribe tu sugerencia, queja o felicitación", sendOpinion: "Enviar opinión",
+        customerOpinions: "Opiniones de nuestros clientes", opinionsLoading: "Cargando opiniones…",
+        opinionsEmpty: "Todavía no hay opiniones publicadas.",
+        opinionsLoadError: "No se pudieron cargar las opiniones. Inténtalo más tarde.",
         opinionMissingConfig: "Falta configurar Supabase. Agrega la URL del proyecto y la clave pública anon en java.js.",
         opinionSending: "Enviando tu opinión…", opinionSent: "¡Gracias! Recibimos tu opinión.",
         opinionSendError: "No se pudo enviar la opinión. Inténtalo de nuevo más tarde.",
@@ -216,10 +224,15 @@ const translations = {
         askPromotions: "Hello, I would like to ask about available specials.", consultWhatsApp: "Ask on WhatsApp",
         glutenFree: "Ask about availability. Gluten-free options.",
         comingSoon: "Items in this category are coming soon.",
-        useLocationError: "Couldn't get your location. Check location permissions and try again.",
+        useLocationError: "Couldn't get your location. You can enter the address manually.",
         locationUnsupported: "Your browser can't share your location. You can enter the address manually.",
         locationSecure: "To share your location, open this website over HTTPS or localhost.",
-        locationFound: "Location added. You can edit the address before placing your order.",
+        locationFound: "Location obtained. Confirm the point is correct before continuing.",
+        locationConfirmNeeded: "Confirm the location to include coordinates with the order.",
+        locationConfirmed: "Location confirmed.",
+        locationInvalid: "The browser returned invalid coordinates. You can enter the address manually.",
+        confirmDeliveryLocation: "I confirm this location is correct",
+        confirmLocationError: "Confirm the obtained location before continuing.",
         gettingLocation: "Getting your location…", chooseBranchError: "Choose a location for your order",
         emptyOrderError: "Add at least one item 🙂", addressError: "Enter an address or share your location",
         noName: "No name", orderTitle: "New order", customer: "Customer", orderType: "Type",
@@ -233,6 +246,9 @@ const translations = {
         yourNameOptional: "Name (optional)", contactOptional: "Phone or email (optional)",
         contactPlaceholder: "Phone or email", yourOpinion: "Your feedback",
         opinionPlaceholder: "Write your suggestion, complaint, or compliment", sendOpinion: "Send feedback",
+        customerOpinions: "Customer feedback", opinionsLoading: "Loading feedback…",
+        opinionsEmpty: "There are no reviews yet.",
+        opinionsLoadError: "Couldn't load feedback. Please try again later.",
         opinionMissingConfig: "Supabase isn't configured yet. Add your project URL and public anon key in java.js.",
         opinionSending: "Sending your feedback…", opinionSent: "Thank you! We received your feedback.",
         opinionSendError: "Couldn't send your feedback. Please try again later.",
@@ -242,6 +258,44 @@ const translations = {
 let idioma = "es";
 function texto(clave) {
     return translations[idioma][clave];
+}
+let opinionesPublicas = [];
+function pintarOpiniones() {
+    const status = $("opinions-status");
+    const entries = $("opinions-entries");
+    if (!status || !entries) return;
+
+    entries.replaceChildren();
+    status.classList.remove("error");
+    if (!opinionesPublicas.length) {
+        status.textContent = texto("opinionsEmpty");
+        return;
+    }
+
+    status.textContent = "";
+    const tipos = idioma === "en"
+        ? { "Sugerencia": "Suggestion", "Queja": "Complaint", "Felicitación": "Compliment" }
+        : { "Sugerencia": "Sugerencia", "Queja": "Queja", "Felicitación": "Felicitación" };
+    opinionesPublicas.forEach(opinion => {
+        const card = document.createElement("article");
+        card.className = "feedback-entry";
+        const head = document.createElement("div");
+        head.className = "feedback-entry-head";
+        const type = document.createElement("strong");
+        type.textContent = tipos[opinion.tipo] || opinion.tipo;
+        const date = document.createElement("time");
+        date.className = "feedback-entry-date";
+        date.dateTime = opinion.created_at;
+        date.textContent = new Intl.DateTimeFormat(idioma === "en" ? "en-US" : "es-NI", {
+            dateStyle: "medium"
+        }).format(new Date(opinion.created_at));
+        const message = document.createElement("p");
+        message.className = "feedback-entry-comment";
+        message.textContent = opinion.mensaje;
+        head.append(type, date);
+        card.append(head, message);
+        entries.append(card);
+    });
 }
 function traducirPagina() {
     document.documentElement.lang = idioma === "en" ? "en-US" : "es";
@@ -267,6 +321,7 @@ function traducirPagina() {
     pintarMenu(categoriaActual);
     pintarHoras();
     pintarCarrito();
+    pintarOpiniones();
 }
 try {
     const idiomaGuardado = localStorage.getItem("idioma");
@@ -586,6 +641,50 @@ if ($("feedback-form")) {
         status.classList.toggle("error", isError);
     }
 
+    async function cargarOpiniones() {
+        const status = $("opinions-status");
+        const url = CONFIG.supabaseUrl.trim().replace(/\/+$/, "");
+        const anonKey = CONFIG.supabaseAnonKey.trim();
+        if (!url.startsWith("https://") || url.includes("TU-PROJECT-REF") ||
+            !anonKey || anonKey.includes("PEGA_AQUI")) {
+            status.textContent = texto("opinionMissingConfig");
+            status.classList.add("error");
+            return;
+        }
+
+        status.textContent = texto("opinionsLoading");
+        status.classList.remove("error");
+        try {
+            const pageSize = 1000;
+            const resultados = [];
+            for (let offset = 0; ; offset += pageSize) {
+                const response = await fetch(
+                    `${url}/rest/v1/opiniones?select=created_at,tipo,mensaje&order=created_at.desc`,
+                    {
+                        headers: {
+                            apikey: anonKey,
+                            "Range-Unit": "items",
+                            Range: `${offset}-${offset + pageSize - 1}`
+                        }
+                    }
+                );
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase respondió ${response.status}: ${details}`);
+                }
+                const pagina = await response.json();
+                resultados.push(...pagina);
+                if (pagina.length < pageSize) break;
+            }
+            opinionesPublicas = resultados;
+            pintarOpiniones();
+        } catch (error) {
+            console.error("No se pudieron cargar las opiniones públicas:", error);
+            status.textContent = texto("opinionsLoadError");
+            status.classList.add("error");
+        }
+    }
+
     $("feedback-form").addEventListener("submit", event => {
         event.preventDefault();
         const url = CONFIG.supabaseUrl.trim();
@@ -628,6 +727,7 @@ if ($("feedback-form")) {
             }
             $("feedback-form").reset();
             mostrarEstadoFeedback(texto("opinionSent"));
+            cargarOpiniones();
         }).catch(error => {
             console.error("No se pudo guardar la opinión en Supabase:", error);
             mostrarEstadoFeedback(texto("opinionSendError"), true);
@@ -635,6 +735,7 @@ if ($("feedback-form")) {
             submit.disabled = false;
         });
     });
+    cargarOpiniones();
 }
 
 
@@ -704,6 +805,7 @@ $("o-type").onchange = () => {
     $("o-addr").hidden = !domicilio;
     $("o-location").hidden = !domicilio;
     $("o-map").hidden = !domicilio || !ubicacionEntrega;
+    $("o-location-confirm-wrap").hidden = !domicilio || !ubicacionEntrega;
     if (!domicilio) {
         $("o-map").hidden = true;
         $("o-location-status").textContent = "";
@@ -711,6 +813,13 @@ $("o-type").onchange = () => {
 };
 
 let ubicacionEntrega = "";
+$("o-location-confirm").onchange = () => {
+    if (!ubicacionEntrega) return;
+    ubicacionEntrega.confirmada = $("o-location-confirm").checked;
+    $("o-location-status").textContent = ubicacionEntrega.confirmada
+        ? texto("locationConfirmed")
+        : texto("locationConfirmNeeded");
+};
 $("o-location").onclick = () => {
     if (!navigator.geolocation) {
         $("o-location-status").textContent = texto("locationUnsupported");
@@ -722,23 +831,38 @@ $("o-location").onclick = () => {
     }
 
     $("o-location").disabled = true;
+    ubicacionEntrega = "";
+    $("o-location-confirm").checked = false;
+    $("o-location-confirm-wrap").hidden = true;
+    $("o-map").hidden = true;
     $("o-location-status").textContent = texto("gettingLocation");
     navigator.geolocation.getCurrentPosition(position => {
         const latitud = position.coords.latitude;
         const longitud = position.coords.longitude;
+        if (!Number.isFinite(latitud) || latitud < -90 || latitud > 90 ||
+            !Number.isFinite(longitud) || longitud < -180 || longitud > 180) {
+            $("o-location").disabled = false;
+            $("o-location-status").textContent = texto("locationInvalid");
+            return;
+        }
         const coordenadas = `${latitud}, ${longitud}`;
         const consultaMapa = encodeURIComponent(`${latitud},${longitud}`);
         const precision = Math.round(position.coords.accuracy);
         ubicacionEntrega = {
+            latitud,
+            longitud,
             coordenadas,
             precision,
+            confirmada: false,
             googleMaps: `https://www.google.com/maps/search/?api=1&query=${consultaMapa}`,
             waze: `https://waze.com/ul?ll=${consultaMapa}&navigate=yes`
         };
         $("o-addr").value = coordenadas;
         $("o-map").href = ubicacionEntrega.googleMaps;
         $("o-map").hidden = false;
-        $("o-location-status").textContent = `${texto("locationFound")} (${texto("accuracy")}: ±${precision} m)`;
+        $("o-location-confirm-wrap").hidden = false;
+        $("o-location-status").textContent =
+            `${texto("locationFound")} (${texto("accuracy")}: ±${precision} m) ${texto("locationConfirmNeeded")}`;
         $("o-location").disabled = false;
     }, error => {
         $("o-location").disabled = false;
@@ -750,6 +874,8 @@ $("o-addr").addEventListener("input", () => {
     if (!ubicacionEntrega) return;
     ubicacionEntrega = "";
     $("o-map").hidden = true;
+    $("o-location-confirm").checked = false;
+    $("o-location-confirm-wrap").hidden = true;
 });
 
 // Enviar el pedido al WhatsApp del negocio
@@ -760,6 +886,15 @@ $("o-send").onclick = () => {
     const local = CONFIG.locales[Number($("o-local").value)];
     const domicilio = $("o-type").value === "A domicilio";
     if (domicilio && !$("o-addr").value.trim()) return alert(texto("addressError"));
+    if (domicilio && ubicacionEntrega &&
+        (!Number.isFinite(ubicacionEntrega.latitud) || ubicacionEntrega.latitud < -90 ||
+            ubicacionEntrega.latitud > 90 || !Number.isFinite(ubicacionEntrega.longitud) ||
+            ubicacionEntrega.longitud < -180 || ubicacionEntrega.longitud > 180)) {
+        return alert(texto("locationInvalid"));
+    }
+    if (domicilio && ubicacionEntrega && !ubicacionEntrega.confirmada) {
+        return alert(texto("confirmLocationError"));
+    }
     let subtotal = 0;
     const lineas = ids.map(i => {
         const { precio: precioUnitario, nombre } = detalleProducto(i), q = carrito[i];

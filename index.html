@@ -116,6 +116,11 @@
   <section id="opiniones" class="wrap alt">
     <h2 data-i18n="opinionsTitle">Comparte tu opinión</h2>
     <p class="feedback-intro" data-i18n="opinionsIntro">Tus comentarios nos ayudan a mejorar.</p>
+    <div class="feedback-list">
+      <h3 data-i18n="customerOpinions">Opiniones de nuestros clientes</h3>
+      <p id="opinions-status" class="feedback-status feedback-empty" role="status" aria-live="polite"></p>
+      <div id="opinions-entries" class="feedback-entries"></div>
+    </div>
     <form id="feedback-form" class="form feedback-form">
       <label for="feedback-type" data-i18n="opinionType">Tipo de opinión</label>
       <select id="feedback-type" required>
@@ -178,6 +183,10 @@
         actual</button>
       <a id="o-map" class="map-link" target="_blank" rel="noopener" hidden data-i18n="viewMap">Ver ubicación en Google
         Maps</a>
+      <label id="o-location-confirm-wrap" class="location-confirm" hidden>
+        <input id="o-location-confirm" type="checkbox">
+        <span data-i18n="confirmDeliveryLocation">Confirmo que esta ubicación es correcta</span>
+      </label>
       <p id="o-location-status" class="location-status" role="status" aria-live="polite"></p>
       <textarea id="o-note" rows="2" placeholder="Notas (sin azúcar, leche de avena...)"
         data-i18n-placeholder="orderNotes"></textarea>

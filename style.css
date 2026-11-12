@@ -917,6 +917,24 @@ footer {
   cursor: pointer
 }
 
+.cart-foot .location-confirm {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-size: .9rem
+}
+
+.cart-foot .location-confirm input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  accent-color: var(--brand)
+}
+
+.cart-foot .location-confirm[hidden] {
+  display: none
+}
+
 .location-button:disabled {
   cursor: wait;
   opacity: .7
