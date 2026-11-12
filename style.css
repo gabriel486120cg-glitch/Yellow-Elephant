@@ -65,11 +65,37 @@ a {
 }
 
 .logo {
+  display: flex;
+  align-items: center;
   font-weight: bold;
   font-size: 1.25rem;
   text-decoration: none;
   color: var(--brand);
   margin-right: auto
+}
+
+.logo img {
+  display: block;
+  width: 52px;
+  height: auto
+}
+
+.language-picker {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .8rem;
+  white-space: nowrap
+}
+
+.language-picker select {
+  max-width: 130px;
+  padding: .35rem;
+  border: 1px solid #8886;
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit
 }
 
 #links {
@@ -512,7 +538,8 @@ iframe {
 }
 
 .form input,
-.form textarea {
+.form textarea,
+.form select {
   padding: .9rem;
   border-radius: 12px;
   border: 1px solid #8886;
@@ -530,6 +557,11 @@ iframe {
 .feedback-form label,
 .rating-field legend {
   font-weight: 600
+}
+
+.feedback-form .feedback-status {
+  margin: 0;
+  min-height: 1.5em
 }
 
 .rating-field {
@@ -697,28 +729,9 @@ footer {
 
 /* ---- Fondo con foto (✏️ cambia img/fondo.jpg por tu foto) ---- */
 .hero {
-  background: linear-gradient(#0d1a1fb8, #0d1a1fd9), url("img/fondo.jpg") center/cover fixed no-repeat;
-  color: #fff
-}
-
-.hero h1,
-.hero .eyebrow {
-  color: #ffd28a
-}
-
-.hero .lead {
-  color: #f3e6cf
-}
-
-.hero .btn {
-  background: #ffd28a;
-  border-color: #ffd28a;
-  color: #1b2a30
-}
-
-.hero .btn.ghost {
-  background: none;
-  color: #ffd28a
+  background: linear-gradient(color-mix(in srgb, var(--bg) 82%, transparent),
+      color-mix(in srgb, var(--bg) 82%, transparent)), url("img/fondo.jpg") center/cover fixed no-repeat;
+  color: var(--text)
 }
 
 .g1 {
@@ -880,13 +893,33 @@ footer {
 
 .cart-foot input,
 .cart-foot select,
-.cart-foot textarea {
+.cart-foot textarea,
+.cart-foot .location-button {
   padding: .7rem;
   border-radius: 10px;
   border: 1px solid #8886;
   background: var(--card);
   color: var(--text);
   font: inherit
+}
+
+.location-button {
+  cursor: pointer
+}
+
+.location-button:disabled {
+  cursor: wait;
+  opacity: .7
+}
+
+.location-status {
+  color: var(--muted);
+  font-size: .85rem
+}
+
+.map-link {
+  color: var(--brand);
+  font-weight: 600
 }
 
 .total {

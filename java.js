@@ -7,6 +7,8 @@ const CONFIG = {
     instagram: "https://www.instagram.com/elefanteamarillonicaragua?vrfl=OW9zeHBzM3JnNDZ1",
     facebook: "https://www.facebook.com/share/1FhHpvQw1k/",
     moneda: "C$",
+    supabaseUrl: "https://TU-PROJECT-REF.supabase.co",
+    supabaseAnonKey: "PEGA_AQUI_TU_ANON_PUBLIC_KEY",
     transferencia: {
         banco: "BAC",
         cuenta: "368499471",
@@ -138,6 +140,137 @@ const CONFIG = {
    ========================================================== */
 const $ = id => document.getElementById(id);
 const C$ = $;
+const translations = {
+    es: {
+        navMenu: "Menú", navStory: "Historia", navGallery: "Galería", navLocation: "Ubicación", navContact: "Contacto",
+        navOpinions: "Opiniones",
+        languageLabel: "Idioma", eyebrow: "Café de especialidad", heroTitle: "Somos Únicos<br>una familia",
+        heroLead: "Cada plato, café o postre tiene como ingrediente principal el amor de cada uno de nosotros.",
+        viewMenu: "Ver el menú", directions: "Cómo llegar", menuTitle: "Nuestro menú", storyTitle: "Nuestra historia",
+        story2018: "Nace el sueño: un carrito de café en el mercado local.", story2020: "Abrimos nuestro primer local con tostado propio.",
+        story2023: "Trabajamos directamente con pequeños productores.", today: "Hoy",
+        storyToday: "Un espacio acogedor para trabajar, charlar y disfrutar.", galleryTitle: "Galería",
+        locationsTitle: "Ubicación y horarios", hoursTitle: "Horarios", contactTitle: "Escríbenos",
+        yourName: "Tu nombre", messageOrder: "Tu mensaje o pedido", sendWhatsApp: "Enviar por WhatsApp",
+        footerMessage: "Hecho con el amor de cada uno de nosotros", openCart: "Abrir carrito", cart: "Carrito",
+        yourOrder: "Tu pedido", close: "Cerrar", subtotal: "Subtotal", tipPrompt: "¿Deseas agregar propina?",
+        noTip: "Sin propina", tip: "Propina", total: "Total", pickup: "Recoger en tienda", delivery: "A domicilio",
+        deliveryAddress: "Dirección de entrega", useLocation: "Usar mi ubicación actual",
+        viewMap: "Ver ubicación en Google Maps", orderNotes: "Notas (sin azúcar, leche de avena...)",
+        onlinePayment: "El pago de pedidos en línea es por transferencia bancaria.",
+        whatsAppHelp: "Se abrirá WhatsApp con el pedido listo. Para enviarlo, presiona Enviar en WhatsApp.",
+        continueWhatsApp: "Continuar a WhatsApp", clearCart: "Vaciar carrito", branches: "Sucursales",
+        chooseBranch: "Elige el local", categoryLabel: "Categorías del menú", add: "+ Agregar",
+        optionLabel: "Tamaño / opción", emptyCart: "Tu carrito está vacío ☕<br>Agrega algo del menú.",
+        promotions: "Promociones", noPromotions: "No hay promociones publicadas por el momento. Escríbenos por WhatsApp para consultar las promociones disponibles.",
+        askPromotions: "Hola, quisiera consultar las promociones disponibles.", consultWhatsApp: "Consultar por WhatsApp",
+        glutenFree: "Consulta disponibilidad. Opciones gluten free.",
+        comingSoon: "Próximamente agregaremos productos a esta categoría.",
+        useLocationError: "No se pudo obtener tu ubicación. Revisa los permisos de ubicación e inténtalo de nuevo.",
+        locationUnsupported: "Tu navegador no permite compartir la ubicación. Puedes escribir la dirección manualmente.",
+        locationSecure: "Para compartir la ubicación, abre la web con HTTPS o desde localhost.",
+        locationFound: "Ubicación agregada. Puedes editar la dirección antes de enviar el pedido.",
+        gettingLocation: "Obteniendo tu ubicación…", chooseBranchError: "Elige el local para tu pedido",
+        emptyOrderError: "Agrega al menos un producto 🙂", addressError: "Escribe la dirección o comparte tu ubicación",
+        noName: "Sin nombre", orderTitle: "Nuevo pedido", customer: "Cliente", orderType: "Tipo",
+        paymentMethod: "Forma de pago: Transferencia bancaria", bank: "Banco", account: "Número de cuenta",
+        address: "Dirección", coordinates: "Coordenadas", accuracy: "Precisión aproximada",
+        mapLocation: "Abrir en Google Maps", wazeLocation: "Abrir en Waze", notes: "Notas",
+        theme: "Cambiar modo", openMenu: "Abrir menú", whatsApp: "Abrir WhatsApp",
+        contactGreeting: "Hola, soy", transferAccount: "Cuenta en",
+        opinionsTitle: "Comparte tu opinión", opinionsIntro: "Tus comentarios nos ayudan a mejorar.",
+        opinionType: "Tipo de opinión", suggestion: "Sugerencia", complaint: "Queja", compliment: "Felicitación",
+        yourNameOptional: "Nombre (opcional)", contactOptional: "Teléfono o correo (opcional)",
+        contactPlaceholder: "Teléfono o correo", yourOpinion: "Tu opinión",
+        opinionPlaceholder: "Escribe tu sugerencia, queja o felicitación", sendOpinion: "Enviar opinión",
+        opinionMissingConfig: "Falta configurar Supabase. Agrega la URL del proyecto y la clave pública anon en java.js.",
+        opinionSending: "Enviando tu opinión…", opinionSent: "¡Gracias! Recibimos tu opinión.",
+        opinionSendError: "No se pudo enviar la opinión. Inténtalo de nuevo más tarde.",
+        languageEnglish: "English (US)", languageSpanish: "Español"
+    },
+    en: {
+        navMenu: "Menu", navStory: "Our story", navGallery: "Gallery", navLocation: "Locations", navContact: "Contact",
+        navOpinions: "Feedback",
+        languageLabel: "Language", eyebrow: "Specialty coffee", heroTitle: "We are unique<br>we are family",
+        heroLead: "Every dish, coffee, and dessert is made with our love as its main ingredient.",
+        viewMenu: "View the menu", directions: "Get directions", menuTitle: "Our menu", storyTitle: "Our story",
+        story2018: "The dream begins: a coffee cart at the local market.", story2020: "We open our first location with our own roasting.",
+        story2023: "We work directly with small producers.", today: "Today",
+        storyToday: "A welcoming place to work, chat, and enjoy.", galleryTitle: "Gallery",
+        locationsTitle: "Locations & hours", hoursTitle: "Hours", contactTitle: "Contact us",
+        yourName: "Your name", messageOrder: "Your message or order", sendWhatsApp: "Send via WhatsApp",
+        footerMessage: "Made with love by all of us", openCart: "Open cart", cart: "Cart",
+        yourOrder: "Your order", close: "Close", subtotal: "Subtotal", tipPrompt: "Would you like to add a tip?",
+        noTip: "No tip", tip: "Tip", total: "Total", pickup: "Pickup", delivery: "Delivery",
+        deliveryAddress: "Delivery address", useLocation: "Use my current location",
+        viewMap: "View location on Google Maps", orderNotes: "Notes (no sugar, oat milk...)",
+        onlinePayment: "Online orders are paid by bank transfer.",
+        whatsAppHelp: "WhatsApp will open with your order ready. Press Send in WhatsApp to place it.",
+        continueWhatsApp: "Continue to WhatsApp", clearCart: "Clear cart", branches: "Locations",
+        chooseBranch: "Choose a location", categoryLabel: "Menu categories", add: "+ Add",
+        optionLabel: "Size / option", emptyCart: "Your cart is empty ☕<br>Add something from the menu.",
+        promotions: "Specials", noPromotions: "No specials are posted right now. Message us on WhatsApp to ask about available specials.",
+        askPromotions: "Hello, I would like to ask about available specials.", consultWhatsApp: "Ask on WhatsApp",
+        glutenFree: "Ask about availability. Gluten-free options.",
+        comingSoon: "Items in this category are coming soon.",
+        useLocationError: "Couldn't get your location. Check location permissions and try again.",
+        locationUnsupported: "Your browser can't share your location. You can enter the address manually.",
+        locationSecure: "To share your location, open this website over HTTPS or localhost.",
+        locationFound: "Location added. You can edit the address before placing your order.",
+        gettingLocation: "Getting your location…", chooseBranchError: "Choose a location for your order",
+        emptyOrderError: "Add at least one item 🙂", addressError: "Enter an address or share your location",
+        noName: "No name", orderTitle: "New order", customer: "Customer", orderType: "Type",
+        paymentMethod: "Payment method: Bank transfer", bank: "Bank", account: "Account number",
+        address: "Address", coordinates: "Coordinates", accuracy: "Approximate accuracy",
+        mapLocation: "Open in Google Maps", wazeLocation: "Open in Waze", notes: "Notes",
+        theme: "Toggle color theme", openMenu: "Open menu", whatsApp: "Open WhatsApp",
+        contactGreeting: "Hi, I'm", transferAccount: "Account in",
+        opinionsTitle: "Share your feedback", opinionsIntro: "Your feedback helps us improve.",
+        opinionType: "Feedback type", suggestion: "Suggestion", complaint: "Complaint", compliment: "Compliment",
+        yourNameOptional: "Name (optional)", contactOptional: "Phone or email (optional)",
+        contactPlaceholder: "Phone or email", yourOpinion: "Your feedback",
+        opinionPlaceholder: "Write your suggestion, complaint, or compliment", sendOpinion: "Send feedback",
+        opinionMissingConfig: "Supabase isn't configured yet. Add your project URL and public anon key in java.js.",
+        opinionSending: "Sending your feedback…", opinionSent: "Thank you! We received your feedback.",
+        opinionSendError: "Couldn't send your feedback. Please try again later.",
+        languageEnglish: "English (US)", languageSpanish: "Spanish"
+    }
+};
+let idioma = "es";
+function texto(clave) {
+    return translations[idioma][clave];
+}
+function traducirPagina() {
+    document.documentElement.lang = idioma === "en" ? "en-US" : "es";
+    document.title = idioma === "en" ? `${CONFIG.nombre} | Coffee Shop` : `${CONFIG.nombre} | Cafetería de especialidad`;
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+        element.innerHTML = texto(element.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+        element.placeholder = texto(element.dataset.i18nPlaceholder);
+    });
+    document.querySelectorAll("[data-i18n-aria]").forEach(element => {
+        element.setAttribute("aria-label", texto(element.dataset.i18nAria));
+    });
+    $("tabs").setAttribute("aria-label", texto("categoryLabel"));
+    $("branches").setAttribute("aria-label", texto("branches"));
+    $("o-local").setAttribute("aria-label", texto("chooseBranch"));
+    pintarOpcionesLocales();
+    $("transfer-details").innerHTML =
+        `<strong>${CONFIG.transferencia.banco}</strong> · ${texto("transferAccount")} ${CONFIG.transferencia.moneda}<br>` +
+        `<span class="account-number">${CONFIG.transferencia.cuenta}</span>`;
+    $("o-location-status").textContent = "";
+    pintarSucursales();
+    pintarMenu(categoriaActual);
+    pintarHoras();
+    pintarCarrito();
+}
+try {
+    const idiomaGuardado = localStorage.getItem("idioma");
+    if (idiomaGuardado === "en" || idiomaGuardado === "es") idioma = idiomaGuardado;
+} catch (error) {
+    console.warn("No se pudo recuperar el idioma guardado:", error);
+}
 const numeroWhatsApp = CONFIG.whatsapp.replace(/\D/g, "");
 function abrirWhatsApp(texto) {
     const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(texto)}`;
@@ -149,21 +282,30 @@ const precio = n => `${CONFIG.moneda} ${formatoNumero.format(n)}`;
 
 // Textos desde CONFIG
 document.title = CONFIG.nombre + " | Cafetería";
-$("brand").textContent = $("brand2").textContent = CONFIG.nombre;
+const brand = $("brand");
+if (brand) brand.textContent = CONFIG.nombre;
+$("brand2").textContent = CONFIG.nombre;
+function pintarOpcionesLocales() {
+    const localSeleccionado = $("o-local").value;
+    $("o-local").innerHTML = `<option value="" disabled>${texto("chooseBranch")}</option>` +
+        CONFIG.locales.map((local, i) => `<option value="${i}">${local.nombre}</option>`).join("");
+    if (localSeleccionado) $("o-local").value = localSeleccionado;
+}
 $("transfer-details").innerHTML =
-    `<strong>${CONFIG.transferencia.banco}</strong> · Cuenta en ${CONFIG.transferencia.moneda}<br>` +
+    `<strong>${CONFIG.transferencia.banco}</strong> · ${texto("transferAccount")} ${CONFIG.transferencia.moneda}<br>` +
     `<span class="account-number">${CONFIG.transferencia.cuenta}</span>`;
-$("branches").innerHTML = CONFIG.locales.map(local =>
-    `<article class="branch">
-        <h3>${local.nombre}</h3>
-        <p>${local.direccion}</p>
-        <div class="branch-links">
-            <a href="${local.maps}" target="_blank" rel="noopener">Google Maps</a>
-            <a href="${local.waze}" target="_blank" rel="noopener">Waze</a>
-        </div>
-    </article>`).join("");
-$("o-local").innerHTML = `<option value="" selected disabled>Elige el local</option>` +
-    CONFIG.locales.map((local, i) => `<option value="${i}">${local.nombre}</option>`).join("");
+function pintarSucursales() {
+    $("branches").innerHTML = CONFIG.locales.map(local =>
+        `<article class="branch">
+            <h3>${local.nombre}</h3>
+            <p>${local.direccion}</p>
+            <div class="branch-links">
+                <a href="${local.maps}" target="_blank" rel="noopener">Google Maps</a>
+                <a href="${local.waze}" target="_blank" rel="noopener">Waze</a>
+            </div>
+        </article>`).join("");
+}
+pintarOpcionesLocales();
 $("ig").href = CONFIG.instagram;
 $("fb").href = CONFIG.facebook;
 $("wa").href = "https://wa.me/" + numeroWhatsApp;
@@ -171,15 +313,187 @@ $("year").textContent = new Date().getFullYear();
 
 // Menú con pestañas
 const cats = CONFIG.categorias;
+const categoriasEn = {
+    "Desayunos": "Breakfast", "Platos fuertes": "Main dishes", "Cafés calientes": "Hot coffee",
+    "Infusiones": "Teas & infusions", "Drinks calientes": "Hot drinks", "Cafés fríos": "Iced coffee",
+    "Smoothies": "Smoothies", "Limonadas": "Lemonades", "Postres": "Desserts", "Promociones": "Specials"
+};
+const descripcionesMenuEn = [
+    "Fried egg, tomato, turkey ham, feta cheese, olives, jam, honey butter, bread, and Turkish chili.",
+    "Potato hash browns, labneh, scrambled eggs, and salad. Choose bacon, avocado, or turkey ham.",
+    "Crispy yuca waffle with Parmesan, house salad, and Turkish chili.",
+    "Sourdough bono waffles made with yuca and cheese, served with guava jam and condensed milk.",
+    "Russian ricotta pancakes with salted caramel or strawberry compote.",
+    "Brioche French toast with orange caramel, ricotta, and fresh citrus notes.",
+    "Toasted brioche, crispy bacon, egg, cheddar, special sauce, and salad.",
+    "Avocado, poached eggs, hollandaise sauce, and salmon.",
+    "Croissant with your choice of filling.",
+    "Sourdough tartine with your choice of topping.",
+    "House-style omelet made with tomato, served with bread, butter, and green salad.",
+    "Two eggs with mozzarella, basil, and tomato, served with bread, butter, and green salad.",
+    "Two eggs cooked your way with feta cheese, served with bread, butter, and green salad.",
+    "Two fried eggs over caramelized onions in curry sauce, served with bread and green salad.",
+    "Two eggs cooked in tomato and sweet pepper sauce with spices, feta cheese, and parsley.",
+    "Greek yogurt bowl with house-made granola, banana, cacao nibs, and honey.",
+    "Dragon fruit, salted caramel, and piña colada.",
+    "Classic beet soup served with Greek yogurt, bacon, and sourdough bread. Contains beef, dill, and beet.",
+    "House-made lentil soup served with melted butter and Turkish chili, with sourdough toast.",
+    "Crisp mixed greens with feta, caramelized ham, sesame seeds, balsamic dressing, red cabbage, bread, and tomato.",
+    "Mixed greens with marinated onions, shredded carrot, capers, cucumber, boiled egg, tomato, house dressing, and bread.",
+    "Sourdough slices with turkey breast ham, Swiss cheese, pickle dressing, bacon, and Turkish red chili.",
+    "A classic Margherita pizza-inspired sandwich with your favorite toppings and Turkish chili.",
+    "Whole-wheat or white bread with house-made pesto, grilled chicken, fresh tomato, and cheese. Served with green salad and Turkish chili.",
+    "Whole-wheat or white bread with tuna, cheddar, onion, garlic, tomato, and mozzarella. Served with green salad and Turkish chili.",
+    "Melted cheddar, mozzarella, and Turkish chili on whole-wheat or white bread.",
+    "Served with house salad and Turkish red chili.",
+    "Chickpea and tahini spread served with vegetable sticks.",
+    "Chicken in curry sauce, served with basmati rice, chutney, and pita bread.",
+    "Mushrooms and chicken in cream sauce, topped with melted cheese.",
+    "Spiced beef kofta served with bulgur, fresh vegetable salad, pita bread, and Turkish red chili.",
+    "Spiced meat over pita bread, topped with tomato sauce, plain yogurt, and butter with Turkish chili.",
+    "Ravioli topped with Greek yogurt, butter sauce, and mildly spicy chili flakes.",
+    "Pork or chicken wontons with Asian-style sauce.",
+    "Slices of cured salmon on mozzarella and, when available, avocado, served on tartine bread with dill and capers.",
+    "Two toasted tartine slices with garlic, pickles, sardines, Turkish red chili, radish, and leek chips.",
+    "Long espresso.",
+    "Double espresso.",
+    "Coffee prepared Turkish-style.",
+    "Espresso with a splash of milk.",
+    "Classic Americano.",
+    "Espresso with milk and foam.",
+    "Espresso with steamed milk.",
+    "Espresso with textured milk.",
+    "Latte with salted caramel.",
+    "Chai tea with milk.",
+    "Espresso, chocolate, and milk.",
+    "Calala fruit pulp, orange juice, and spices, sweetened with honey.",
+    "Apple slices and chamomile tea, sweetened with honey.",
+    "Ginger and mint tea, sweetened with honey.",
+    "Hibiscus tea with spices, orange, and honey.",
+    "Black tea with milk, ginger, and a blend of spices.",
+    "Hot chocolate made with natural chocolate.",
+    "Chocolate drink.",
+    "A warm, spiced drink.",
+    "Matcha prepared with milk.",
+    "Mulled wine with spices.",
+    "Turkish tea.",
+    "Cold-brewed coffee.",
+    "Cold brew with milk.",
+    "Cold brew with almond.",
+    "Iced chai.",
+    "Chilled caramel drink.",
+    "Chilled coffee and chocolate drink.",
+    "Iced matcha with honey and almond.",
+    "Iced latte.",
+    "Frappé with your choice of flavor.",
+    "House green blend with pineapple, ginger, seeds, and orange juice.",
+    "Mixed berries, banana, and orange juice.",
+    "Banana, peanut butter, 100% chocolate, and almond milk.",
+    "Whole-grain oats with apple, almond milk, almond butter, and cinnamon.",
+    "Banana, strawberry, and orange juice.",
+    "Pineapple and ginger blended with orange juice.",
+    "House-made Greek yogurt smoothie with coconut and pineapple.",
+    "Turmeric, orange juice, pineapple, black pepper, and ginger.",
+    "Add plant-based protein to your smoothie.",
+    "Milkshake in your favorite flavor.",
+    "Lemon juice, lemon, spearmint, and water.",
+    "Spearmint and lemon juice.",
+    "Ginger and fresh lemon juice.",
+    "Calala fruit pulp and lemon juice.",
+    "Strawberry pulp and lemon juice.",
+    "Dragon fruit pulp and lemon juice.",
+    "Matcha and lemon juice.",
+    "Ginger, honey, lemon, and soda water."
+];
+const nombresPlatosEn = {
+    "Breakfast plate europeo": "European breakfast plate",
+    "Hashbrown waffles de yuca y parmesano": "Yuca and Parmesan hash brown waffles",
+    "Tostada francesa Suzette": "Suzette French toast",
+    "Arma tu croissant": "Build your own croissant",
+    "Tartine de masa madre": "Sourdough tartine",
+    "Omelette de la casa": "House omelet",
+    "Omelette Margarita": "Margarita omelet",
+    "Huevos con queso feta": "Eggs with feta",
+    "Huevos al curry": "Curry eggs",
+    "Parfait del Elefante": "Elefante parfait",
+    "Sopa Borsh": "Borscht",
+    "Sopa de lentejas": "Lentil soup",
+    "Ensalada con queso feta": "Feta cheese salad",
+    "Ensalada de atún": "Tuna salad",
+    "Sándwich con jamón y queso": "Ham and cheese sandwich",
+    "Sándwich Margarita": "Margherita sandwich",
+    "Sándwich pollo pesto": "Chicken pesto sandwich",
+    "Sándwich Tuna Melt": "Tuna melt sandwich",
+    "Sándwich Ismail Baba": "Ismail Baba sandwich",
+    "Quiche de pollo y espinaca": "Chicken and spinach quiche",
+    "Plato con kofta y bulgur": "Kofta and bulgur plate",
+    "Tostada de salmón": "Salmon toast",
+    "Tostada mediterránea": "Mediterranean toast",
+    "Café turco (4 oz)": "Turkish coffee (4 oz)",
+    "Cortadito / Macchiato": "Cortado / Macchiato",
+    "Capuchino": "Cappuccino",
+    "Té marroquí": "Moroccan tea",
+    "Jamaica con especias": "Spiced hibiscus tea",
+    "Chocolate caliente 100% natural": "100% natural hot chocolate",
+    "Chocolate caliente (bebida de chocolate)": "Hot chocolate drink",
+    "Té turco (4 oz)": "Turkish tea (4 oz)",
+    "Cold brew con leche": "Cold brew with milk",
+    "Chai frío": "Iced chai",
+    "Caramelo frío": "Iced caramel",
+    "Mocha frío": "Iced mocha",
+    "Manzana avena": "Apple and oat smoothie",
+    "Banana fresa": "Banana strawberry smoothie",
+    "Piña jengibre": "Pineapple ginger smoothie",
+    "Piña colada": "Piña colada smoothie",
+    "Anti-inflamatorio": "Anti-inflammatory smoothie",
+    "Extra de proteína vegetal": "Plant-based protein add-on",
+    "Malteada": "Milkshake",
+    "Limonada tradicional": "Classic lemonade",
+    "Limonada con menta": "Mint lemonade",
+    "Limonada de jengibre": "Ginger lemonade",
+    "Limonada de calala": "Calala lemonade",
+    "Limonada de fresa": "Strawberry lemonade",
+    "Limonada de pitahaya": "Dragon fruit lemonade",
+    "Ginger ale natural": "Homemade ginger ale"
+};
+const opcionesMenuEn = {
+    "Una persona": "For one",
+    "Para compartir": "For sharing",
+    "Sin extra": "No extras",
+    "Extra huevo (+C$ 60)": "Add an egg (+C$ 60)",
+    "Extra huevo benedictino (+C$ 150)": "Add a poached egg with hollandaise (+C$ 150)",
+    "Solo croissant": "Croissant only",
+    "Jalea y mantequilla": "Jam and butter",
+    "Queso mixto": "Mixed cheese",
+    "Jamón de pavo y queso": "Turkey ham and cheese",
+    "Huevo y queso": "Egg and cheese",
+    "Solo tartine": "Tartine only",
+    "Ensalada": "Salad",
+    "Agregar pollo (+C$ 90)": "Add chicken (+C$ 90)",
+    "Agregar aguacate (+C$ 40)": "Add avocado (+C$ 40)",
+    "Leche regular": "Regular milk",
+    "Leche de almendra o avena (+C$ 80)": "Almond or oat milk (+C$ 80)",
+    "Caramelo salado (+C$ 60)": "Salted caramel (+C$ 60)",
+    "Caramelo (+C$ 60)": "Caramel (+C$ 60)",
+    "Maní (+C$ 60)": "Peanut (+C$ 60)",
+    "Maple (+C$ 70)": "Maple (+C$ 70)",
+    "Receta de la casa": "House recipe",
+    "Leche de almendra o avena (+C$ 60)": "Almond or oat milk (+C$ 60)",
+    "Chocolate": "Chocolate",
+    "Vainilla": "Vanilla",
+    "Fresa": "Strawberry"
+};
+let categoriaActual = cats[0];
 function pintarMenu(cat) {
+    categoriaActual = cat;
     C$("tabs").innerHTML = cats.map(c =>
-        `<button class="tab ${c === cat ? 'on' : ''}" data-c="${c}" role="tab" aria-selected="${c === cat}">${c}</button>`).join("");
+        `<button class="tab ${c === cat ? 'on' : ''}" data-c="${c}" role="tab" aria-selected="${c === cat}">${idioma === "en" ? categoriasEn[c] : c}</button>`).join("");
     if (cat === "Promociones") {
-        const consulta = encodeURIComponent("Hola, quisiera consultar las promociones disponibles.");
+        const consulta = encodeURIComponent(texto("askPromotions"));
         C$("grid").innerHTML = `<article class="card promotion-card">
-            <div class="e">🎉</div><h3>Promociones</h3>
-            <p>${CONFIG.promociones}</p>
-            <a class="btn promotion-link" href="https://wa.me/${numeroWhatsApp}?text=${consulta}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+            <div class="e">🎉</div><h3>${texto("promotions")}</h3>
+            <p>${idioma === "en" ? texto("noPromotions") : CONFIG.promociones}</p>
+            <a class="btn promotion-link" href="https://wa.me/${numeroWhatsApp}?text=${consulta}" target="_blank" rel="noopener">${texto("consultWhatsApp")}</a>
         </article>`;
         return;
     }
@@ -188,18 +502,20 @@ function pintarMenu(cat) {
         .filter(p => p.cat === cat);
     C$("grid").innerHTML = productos.length ? productos
         .map(p => {
+            const nombre = idioma === "en" ? nombresPlatosEn[p.nombre] || p.nombre : p.nombre;
+            const descripcion = idioma === "en" ? descripcionesMenuEn[p.i] : p.desc;
             const opciones = p.variantes
-                ? `<label class="option-label">Tamaño / opción
-                    <select class="product-option" aria-label="Tamaño u opción de ${p.nombre}">
-                        ${p.variantes.map((v, i) => `<option value="${i}">${v.nombre} — ${precio(v.precio)}</option>`).join("")}
+                ? `<label class="option-label">${texto("optionLabel")}
+                    <select class="product-option" aria-label="${texto("optionLabel")} ${nombre}">
+                        ${p.variantes.map((v, i) => `<option value="${i}">${idioma === "en" ? opcionesMenuEn[v.nombre] || v.nombre : v.nombre} — ${precio(v.precio)}</option>`).join("")}
                     </select>
                 </label>` : "";
             const precioInicial = p.variantes ? p.variantes[0].precio : p.precio;
-            return `<article class="card"><div class="e">${p.emoji}</div><h3>${p.nombre}</h3>
-                <p>${p.desc}</p>${opciones}<div class="pr">${precio(precioInicial)}</div>
-                <button class="add" data-add="${p.i}">+ Agregar</button></article>`;
+            return `<article class="card"><div class="e">${p.emoji}</div><h3>${nombre}</h3>
+                <p>${descripcion}</p>${opciones}<div class="pr">${precio(precioInicial)}</div>
+                <button class="add" data-add="${p.i}">${texto("add")}</button></article>`;
         }).join("")
-        : `<p class="empty-category">${cat === "Postres" ? "Consulta disponibilidad. Opciones gluten free." : "Próximamente agregaremos productos a esta categoría."}</p>`;
+        : `<p class="empty-category">${cat === "Postres" ? texto("glutenFree") : texto("comingSoon")}</p>`;
 }
 C$("tabs").addEventListener("click", e => { if (e.target.dataset.c) pintarMenu(e.target.dataset.c); });
 pintarMenu(cats[0]);
@@ -211,9 +527,12 @@ C$("grid").addEventListener("change", e => {
 });
 
 // Horarios (resalta el día de hoy)
-const hoy = (new Date().getDay() + 6) % 7;  // lunes = 0
-C$("hours").innerHTML = CONFIG.horario.map((h, i) =>
-    `<li class="${i === hoy ? 'today' : ''}"><span>${h[0]}</span><span>${h[1]}</span></li>`).join("");
+function pintarHoras() {
+    const hoy = (new Date().getDay() + 6) % 7;
+    const diasEn = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    C$("hours").innerHTML = CONFIG.horario.map((h, i) =>
+        `<li class="${i === hoy ? 'today' : ''}"><span>${idioma === "en" ? diasEn[i] : h[0]}</span><span>${h[1]}</span></li>`).join("");
+}
 
 // Modo oscuro (recuerda la elección)
 function setTema(t) {
@@ -224,6 +543,14 @@ function setTema(t) {
 let guardado = null; try { guardado = localStorage.getItem("tema"); } catch (e) { }
 setTema(guardado || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
 $("theme").onclick = () => setTema(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+$("language").value = idioma;
+$("language").addEventListener("change", () => {
+    idioma = $("language").value;
+    try { localStorage.setItem("idioma", idioma); } catch (error) {
+        console.warn("No se pudo guardar el idioma elegido:", error);
+    }
+    traducirPagina();
+});
 
 // Menú hamburguesa (celular)
 C$("burger").onclick = () => {
@@ -242,133 +569,68 @@ document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
 // Formulario → WhatsApp
 C$("send").onclick = () => {
-    const txt = `Hola, soy C${C$("f-name").value || "un cliente"}. ${C$("f-msg").value}`;
+    const nombre = C$("f-name").value.trim();
+    const saludo = idioma === "en" ? `Hi, I'm ${nombre || "a customer"}.` : `Hola, soy ${nombre || "un cliente"}.`;
+    const txt = `${saludo} ${C$("f-msg").value}`;
     abrirWhatsApp(txt);
 };
 
-// Quejas y sugerencias (se conservan en este navegador)
+// Opiniones de clientes → Supabase
 if ($("feedback-form")) {
-    const FEEDBACK_STORAGE_KEY = "elefante-amarillo-feedback-v1";
-    let feedbackEntries = [];
-    let feedbackStorageReady = true;
-    let feedbackRating = 0;
-
     function mostrarEstadoFeedback(message, isError = false) {
         const status = $("feedback-status");
         status.textContent = message;
         status.classList.toggle("error", isError);
     }
 
-    function pintarFeedback() {
-        $("feedback-count").textContent = feedbackEntries.length;
-        const container = $("feedback-entries");
-        container.replaceChildren();
-
-        if (!feedbackEntries.length) {
-            const empty = document.createElement("p");
-            empty.className = "feedback-empty";
-            empty.textContent = "Todavía no hay opiniones. ¡Sé la primera persona en compartir la tuya!";
-            container.append(empty);
-            return;
-        }
-
-        [...feedbackEntries].reverse().forEach(entry => {
-            const card = document.createElement("article");
-            card.className = "feedback-entry";
-
-            const head = document.createElement("div");
-            head.className = "feedback-entry-head";
-            const author = document.createElement("strong");
-            author.textContent = entry.name || "Cliente";
-            const stars = document.createElement("span");
-            stars.className = "feedback-entry-stars";
-            stars.setAttribute("aria-label", `${entry.rating} de 5 estrellas`);
-            stars.textContent = `${"★".repeat(entry.rating)}${"☆".repeat(5 - entry.rating)}`;
-            head.append(author, stars);
-
-            const date = document.createElement("time");
-            date.className = "feedback-entry-date";
-            date.dateTime = entry.createdAt;
-            date.textContent = new Date(entry.createdAt).toLocaleString("es-NI");
-
-            const comment = document.createElement("p");
-            comment.className = "feedback-entry-comment";
-            comment.textContent = entry.comment;
-            card.append(head, date, comment);
-            container.append(card);
-        });
-    }
-
-    try {
-        const savedFeedback = localStorage.getItem(FEEDBACK_STORAGE_KEY);
-        if (savedFeedback) {
-            const parsedFeedback = JSON.parse(savedFeedback);
-            if (!Array.isArray(parsedFeedback) || parsedFeedback.some(entry =>
-                !entry || typeof entry.name !== "string" || typeof entry.comment !== "string" ||
-                !Number.isInteger(entry.rating) || entry.rating < 1 || entry.rating > 5 ||
-                typeof entry.createdAt !== "string")) {
-                throw new Error("Los datos guardados no tienen el formato esperado.");
-            }
-            feedbackEntries = parsedFeedback;
-        }
-        pintarFeedback();
-    } catch (error) {
-        feedbackStorageReady = false;
-        $("feedback-submit").disabled = true;
-        mostrarEstadoFeedback("No se pudieron leer las opiniones guardadas. No se aceptarán nuevos registros para proteger esos datos.", true);
-        console.error("No se pudieron cargar las opiniones guardadas:", error);
-    }
-
-    $("feedback-rating").addEventListener("click", event => {
-        const star = event.target.closest("[data-rating]");
-        if (!star) return;
-        feedbackRating = Number(star.dataset.rating);
-        $("feedback-rating").querySelectorAll(".star").forEach(button => {
-            const selected = Number(button.dataset.rating) <= feedbackRating;
-            button.classList.toggle("selected", selected);
-            button.setAttribute("aria-pressed", String(Number(button.dataset.rating) === feedbackRating));
-        });
-        mostrarEstadoFeedback("");
-    });
-
     $("feedback-form").addEventListener("submit", event => {
         event.preventDefault();
-        if (!feedbackStorageReady) return;
-        if (!feedbackRating) {
-            mostrarEstadoFeedback("Selecciona una calificación de 1 a 5 estrellas.", true);
+        const url = CONFIG.supabaseUrl.trim();
+        const anonKey = CONFIG.supabaseAnonKey.trim();
+        if (!url.startsWith("https://") || url.includes("TU-PROJECT-REF") ||
+            !anonKey || anonKey.includes("PEGA_AQUI")) {
+            mostrarEstadoFeedback(texto("opinionMissingConfig"), true);
             return;
         }
 
-        const entry = {
-            name: $("feedback-name").value.trim(),
-            rating: feedbackRating,
-            comment: $("feedback-comment").value.trim(),
-            createdAt: new Date().toISOString()
-        };
-        if (!entry.comment) {
+        const mensaje = $("feedback-comment").value.trim();
+        if (mensaje.length < 5 || mensaje.length > 1000) {
+            mostrarEstadoFeedback(texto("opinionSendError"), true);
             $("feedback-comment").focus();
-            mostrarEstadoFeedback("Escribe tu comentario antes de guardar.", true);
             return;
         }
 
-        const updatedEntries = [...feedbackEntries, entry];
-        try {
-            localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(updatedEntries));
-        } catch (error) {
-            mostrarEstadoFeedback("No se pudo guardar la opinión en este navegador. Inténtalo de nuevo.", true);
-            console.error("No se pudo guardar la opinión:", error);
-            return;
-        }
-
-        feedbackEntries = updatedEntries;
-        pintarFeedback();
-        $("feedback-form").reset();
-        feedbackRating = 0;
-        $("feedback-rating").querySelectorAll(".star").forEach(button => {
-            button.classList.remove("selected");
-            button.setAttribute("aria-pressed", "false");
+        const submit = $("feedback-submit");
+        submit.disabled = true;
+        mostrarEstadoFeedback(texto("opinionSending"));
+        fetch(`${url.replace(/\/+$/, "")}/rest/v1/opiniones`, {
+            method: "POST",
+            headers: {
+                apikey: anonKey,
+                Authorization: `Bearer ${anonKey}`,
+                "Content-Type": "application/json",
+                Prefer: "return=minimal"
+            },
+            body: JSON.stringify({
+                tipo: $("feedback-type").value,
+                nombre: $("feedback-name").value.trim() || null,
+                contacto: $("feedback-contact").value.trim() || null,
+                mensaje
+            })
+        }).then(response => {
+            if (!response.ok) {
+                return response.text().then(details => {
+                    throw new Error(`Supabase respondió ${response.status}: ${details}`);
+                });
+            }
+            $("feedback-form").reset();
+            mostrarEstadoFeedback(texto("opinionSent"));
+        }).catch(error => {
+            console.error("No se pudo guardar la opinión en Supabase:", error);
+            mostrarEstadoFeedback(texto("opinionSendError"), true);
+        }).finally(() => {
+            submit.disabled = false;
         });
-        mostrarEstadoFeedback("¡Gracias! Tu opinión quedó guardada en este navegador.");
     });
 }
 
@@ -398,7 +660,7 @@ function pintarCarrito() {
         return `<div class="row"><span style="font-size:1.8rem">${producto.emoji}</span>
         <div class="nm">${nombre}<small>${precio(precioUnitario)} c/u</small></div>
         <div class="qty"><button data-m="${i}">−</button><b>${q}</b><button data-p="${i}">+</button></div></div>`;
-    }).join("") : `<p class="empty">Tu carrito está vacío ☕<br>Agrega algo del menú.</p>`;
+    }).join("") : `<p class="empty">${texto("emptyCart")}</p>`;
     const propina = calcularPropina(subtotal);
     $("cart-subtotal").textContent = precio(subtotal);
     $("cart-tip").textContent = precio(propina);
@@ -434,16 +696,67 @@ $("cart-btn").onclick = () => abrir(true);
 $("cart-close").onclick = $("overlay").onclick = () => abrir(false);
 $("o-clear").onclick = () => { carrito = {}; pintarCarrito(); };
 $("o-tip").onchange = pintarCarrito;
-$("o-type").onchange = () => { $("o-addr").hidden = $("o-type").value !== "A domicilio"; };
+$("o-type").onchange = () => {
+    const domicilio = $("o-type").value === "A domicilio";
+    $("o-addr").hidden = !domicilio;
+    $("o-location").hidden = !domicilio;
+    $("o-map").hidden = !domicilio || !ubicacionEntrega;
+    if (!domicilio) {
+        $("o-map").hidden = true;
+        $("o-location-status").textContent = "";
+    }
+};
+
+let ubicacionEntrega = "";
+$("o-location").onclick = () => {
+    if (!navigator.geolocation) {
+        $("o-location-status").textContent = texto("locationUnsupported");
+        return;
+    }
+    if (!window.isSecureContext) {
+        $("o-location-status").textContent = texto("locationSecure");
+        return;
+    }
+
+    $("o-location").disabled = true;
+    $("o-location-status").textContent = texto("gettingLocation");
+    navigator.geolocation.getCurrentPosition(position => {
+        const latitud = position.coords.latitude;
+        const longitud = position.coords.longitude;
+        const coordenadas = `${latitud}, ${longitud}`;
+        const consultaMapa = encodeURIComponent(`${latitud},${longitud}`);
+        const precision = Math.round(position.coords.accuracy);
+        ubicacionEntrega = {
+            coordenadas,
+            precision,
+            googleMaps: `https://www.google.com/maps/search/?api=1&query=${consultaMapa}`,
+            waze: `https://waze.com/ul?ll=${consultaMapa}&navigate=yes`
+        };
+        $("o-addr").value = coordenadas;
+        $("o-map").href = ubicacionEntrega.googleMaps;
+        $("o-map").hidden = false;
+        $("o-location-status").textContent = `${texto("locationFound")} (${texto("accuracy")}: ±${precision} m)`;
+        $("o-location").disabled = false;
+    }, error => {
+        $("o-location").disabled = false;
+        $("o-location-status").textContent = texto("useLocationError");
+        console.error("No se pudo obtener la ubicación del cliente:", error);
+    }, { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 });
+};
+$("o-addr").addEventListener("input", () => {
+    if (!ubicacionEntrega) return;
+    ubicacionEntrega = "";
+    $("o-map").hidden = true;
+});
 
 // Enviar el pedido al WhatsApp del negocio
 $("o-send").onclick = () => {
     const ids = Object.keys(carrito).filter(i => detalleProducto(i));
-    if (!ids.length) return alert("Agrega al menos un producto 🙂");
-    if ($("o-local").value === "") return alert("Elige el local para tu pedido");
+    if (!ids.length) return alert(texto("emptyOrderError"));
+    if ($("o-local").value === "") return alert(texto("chooseBranchError"));
     const local = CONFIG.locales[Number($("o-local").value)];
     const domicilio = $("o-type").value === "A domicilio";
-    if (domicilio && !$("o-addr").value.trim()) return alert("Escribe la dirección de entrega");
+    if (domicilio && !$("o-addr").value.trim()) return alert(texto("addressError"));
     let subtotal = 0;
     const lineas = ids.map(i => {
         const { precio: precioUnitario, nombre } = detalleProducto(i), q = carrito[i];
@@ -453,19 +766,24 @@ $("o-send").onclick = () => {
     const porcentaje = porcentajePropina();
     const propina = calcularPropina(subtotal);
     const total = subtotal + propina;
-    const msg = [`☕ *Nuevo pedido — ${CONFIG.nombre}*`,
-    `🏬 Local: ${local.nombre}`,
-    `👤 Cliente: ${$("o-name").value.trim() || "Sin nombre"}`,
-    `📦 Tipo: ${$("o-type").value}`,
-        "💳 Forma de pago: Transferencia bancaria",
-    `🏦 Banco: ${CONFIG.transferencia.banco} — ${CONFIG.transferencia.moneda}`,
-    `🔢 Número de cuenta: ${CONFIG.transferencia.cuenta}`,
-    domicilio ? `📍 Dirección: ${$("o-addr").value.trim()}` : "",
+    const msg = [`☕ *${texto("orderTitle")} — ${CONFIG.nombre}*`,
+    `🏬 ${texto("chooseBranch")}: ${local.nombre}`,
+    `👤 ${texto("customer")}: ${$("o-name").value.trim() || texto("noName")}`,
+    `📦 ${texto("orderType")}: ${$("o-type").selectedOptions[0].textContent}`,
+    `💳 ${texto("paymentMethod")}`,
+    `🏦 ${texto("bank")}: ${CONFIG.transferencia.banco} — ${CONFIG.transferencia.moneda}`,
+    `🔢 ${texto("account")}: ${CONFIG.transferencia.cuenta}`,
+    domicilio ? `📍 ${texto("address")}: ${$("o-addr").value.trim()}` : "",
+    domicilio && ubicacionEntrega ? `📌 ${texto("coordinates")}: ${ubicacionEntrega.coordenadas}` : "",
+    domicilio && ubicacionEntrega ? `🎯 ${texto("accuracy")}: ±${ubicacionEntrega.precision} m` : "",
+    domicilio && ubicacionEntrega ? `🗺️ ${texto("mapLocation")}: ${ubicacionEntrega.googleMaps}` : "",
+    domicilio && ubicacionEntrega ? `🚗 ${texto("wazeLocation")}: ${ubicacionEntrega.waze}` : "",
         "", ...lineas, "", `Subtotal: ${precio(subtotal)}`,
-    `Propina${porcentaje ? ` (${porcentaje}%)` : ""}: ${precio(propina)}`,
+    `${texto("tip")}${porcentaje ? ` (${porcentaje}%)` : ""}: ${precio(propina)}`,
     `💰 *Total: ${precio(total)}*`,
-    $("o-note").value.trim() ? `📝 Notas: ${$("o-note").value.trim()}` : ""
+    $("o-note").value.trim() ? `📝 ${texto("notes")}: ${$("o-note").value.trim()}` : ""
     ].filter((l, k, a) => l !== "" || (a[k - 1] !== "" && k)).join("\n");
     abrirWhatsApp(msg);
 };
 pintarCarrito();
+traducirPagina();

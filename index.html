@@ -15,61 +15,70 @@
 
   <!-- 1. BARRA DE NAVEGACIÓN -->
   <header class="nav">
-    <a href="#inicio" class="logo">☕ <span id="brand">Elefante Amarillo</span></a>
+    <a href="#inicio" class="logo"><img src="img/logo-elefante.png" alt="Elefante Amarillo"></a>
     <nav id="links">
-      <a href="#menu">Menú</a>
-      <a href="#historia">Historia</a>
-      <a href="#galeria">Galería</a>
-      <a href="#ubicacion">Ubicación</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#menu" data-i18n="navMenu">Menú</a>
+      <a href="#historia" data-i18n="navStory">Historia</a>
+      <a href="#galeria" data-i18n="navGallery">Galería</a>
+      <a href="#ubicacion" data-i18n="navLocation">Ubicación</a>
+      <a href="#contacto" data-i18n="navContact">Contacto</a>
+      <a href="#opiniones" data-i18n="navOpinions">Opiniones</a>
     </nav>
-    <button id="theme" aria-label="Cambiar modo">🌙</button>
-    <button id="burger" aria-label="Abrir menú" aria-controls="links" aria-expanded="false">☰</button>
+    <label class="language-picker"><span data-i18n="languageLabel">Idioma</span>
+      <select id="language" aria-label="Idioma">
+        <option value="es">Español</option>
+        <option value="en">English (US)</option>
+      </select>
+    </label>
+    <button id="theme" aria-label="Cambiar modo" data-i18n-aria="theme">🌙</button>
+    <button id="burger" aria-label="Abrir menú" aria-controls="links" aria-expanded="false"
+      data-i18n-aria="openMenu">☰</button>
   </header>
 
   <!-- 2. INICIO (HERO) -->
   <section id="inicio" class="hero">
     <div class="steam"><i></i><i></i><i></i></div>
-    <p class="eyebrow">Café de especialidad</p>
+    <p class="eyebrow" data-i18n="eyebrow">Café de especialidad</p>
     <!-- ✏️ EDITA: titular y subtítulo -->
-    <h1>Somos Unicos<br>una familia</h1>
-    <p class="lead">Cada plato, café o postre su principal ingrediente es el amor de cada uno de nostros.</p>
+    <h1 data-i18n="heroTitle">Somos Unicos<br>una familia</h1>
+    <p class="lead" data-i18n="heroLead">Cada plato, café o postre su principal ingrediente es el amor de cada uno de
+      nostros.</p>
     <div class="cta">
-      <a href="#menu" class="btn">Ver el menú</a>
-      <a href="#ubicacion" class="btn ghost">Cómo llegar</a>
+      <a href="#menu" class="btn" data-i18n="viewMenu">Ver el menú</a>
+      <a href="#ubicacion" class="btn ghost" data-i18n="directions">Cómo llegar</a>
     </div>
   </section>
 
   <!-- 3. MENÚ (se genera desde java.js) -->
   <section id="menu" class="wrap">
-    <h2>Nuestro menú</h2>
+    <h2 data-i18n="menuTitle">Nuestro menú</h2>
     <div id="tabs" class="tabs" role="tablist" aria-label="Categorías del menú"></div>
     <div id="grid" class="grid" role="tabpanel" aria-live="polite"></div>
   </section>
 
   <!-- 4. HISTORIA (línea de tiempo) -->
   <section id="historia" class="wrap alt">
-    <h2>Nuestra historia</h2>
+    <h2 data-i18n="storyTitle">Nuestra historia</h2>
     <div class="timeline">
       <!-- ✏️ EDITA: copia un bloque <div class="step"> para añadir más -->
       <div class="step reveal"><b>2018</b>
-        <p>Nace el sueño: un carrito de café en el mercado local.</p>
+        <p data-i18n="story2018">Nace el sueño: un carrito de café en el mercado local.</p>
       </div>
       <div class="step reveal"><b>2020</b>
-        <p>Abrimos nuestro primer local con tostado propio.</p>
+        <p data-i18n="story2020">Abrimos nuestro primer local con tostado propio.</p>
       </div>
       <div class="step reveal"><b>2023</b>
-        <p>Trabajamos directo con pequeños productores.</p>
+        <p data-i18n="story2023">Trabajamos directo con pequeños productores.</p>
       </div>
-      <div class="step reveal"><b>Hoy</b>
-        <p>Un espacio acogedor para trabajar, charlar y disfrutar.</p>
+      <div class="step reveal"><b data-i18n="today">Hoy</b>
+        <p data-i18n="storyToday">Un espacio acogedor para trabajar, charlar y disfrutar.</p>
       </div>
     </div>
   </section>
 
   <!-- 5. GALERÍA -->
   <section id="galeria" class="wrap">
-    <h2>Galería</h2>
+    <h2 data-i18n="galleryTitle">Galería</h2>
     <!-- ✏️ EDITA: cambia los emojis por fotos: <img src="img/foto1.jpg" alt="..."> -->
     <div class="gallery">
       <div class="ph g1">☕</div>
@@ -83,10 +92,10 @@
 
   <!-- 6. UBICACIÓN Y HORARIOS -->
   <section id="ubicacion" class="wrap alt">
-    <h2>Ubicación y horarios</h2>
+    <h2 data-i18n="locationsTitle">Ubicación y horarios</h2>
     <div class="two">
       <div>
-        <h3>Horarios</h3>
+        <h3 data-i18n="hoursTitle">Horarios</h3>
         <ul id="hours" class="hours"></ul>
       </div>
       <div id="branches" class="branches" aria-label="Sucursales"></div>
@@ -95,17 +104,42 @@
 
   <!-- 7. CONTACTO -->
   <section id="contacto" class="wrap">
-    <h2>Escríbenos</h2>
+    <h2 data-i18n="contactTitle">Escríbenos</h2>
     <div class="form">
-      <input id="f-name" placeholder="Tu nombre">
-      <textarea id="f-msg" rows="4" placeholder="Tu mensaje o pedido"></textarea>
-      <button id="send" class="btn">Enviar por WhatsApp</button>
+      <input id="f-name" placeholder="Tu nombre" data-i18n-placeholder="yourName">
+      <textarea id="f-msg" rows="4" placeholder="Tu mensaje o pedido" data-i18n-placeholder="messageOrder"></textarea>
+      <button id="send" class="btn" data-i18n="sendWhatsApp">Enviar por WhatsApp</button>
     </div>
   </section>
 
-  <!-- 8. FOOTER -->
+  <!-- 8. OPINIONES -->
+  <section id="opiniones" class="wrap alt">
+    <h2 data-i18n="opinionsTitle">Comparte tu opinión</h2>
+    <p class="feedback-intro" data-i18n="opinionsIntro">Tus comentarios nos ayudan a mejorar.</p>
+    <form id="feedback-form" class="form feedback-form">
+      <label for="feedback-type" data-i18n="opinionType">Tipo de opinión</label>
+      <select id="feedback-type" required>
+        <option value="Sugerencia" data-i18n="suggestion">Sugerencia</option>
+        <option value="Queja" data-i18n="complaint">Queja</option>
+        <option value="Felicitación" data-i18n="compliment">Felicitación</option>
+      </select>
+      <label for="feedback-name" data-i18n="yourNameOptional">Nombre (opcional)</label>
+      <input id="feedback-name" maxlength="60" placeholder="Tu nombre" data-i18n-placeholder="yourName">
+      <label for="feedback-contact" data-i18n="contactOptional">Teléfono o correo (opcional)</label>
+      <input id="feedback-contact" maxlength="100" placeholder="Teléfono o correo"
+        data-i18n-placeholder="contactPlaceholder">
+      <label for="feedback-comment" data-i18n="yourOpinion">Tu opinión</label>
+      <textarea id="feedback-comment" rows="4" minlength="5" maxlength="1000" required
+        placeholder="Escribe tu sugerencia, queja o felicitación" data-i18n-placeholder="opinionPlaceholder"></textarea>
+      <p id="feedback-status" class="feedback-status" role="status" aria-live="polite"></p>
+      <button id="feedback-submit" type="submit" class="btn" data-i18n="sendOpinion">Enviar opinión</button>
+    </form>
+  </section>
+
+  <!-- 9. FOOTER -->
   <footer>
-    <p>© <span id="year"></span> <span id="brand2"></span> · Hecho el amor de cada uno de nosotros</p>
+    <p>© <span id="year"></span> <span id="brand2"></span> · <span data-i18n="footerMessage">Hecho el amor de cada uno
+        de nosotros</span></p>
     <p class="social-links">
       <a id="ig" target="_blank" rel="noopener">Instagram</a>
       <a id="fb" target="_blank" rel="noopener">Facebook</a>
@@ -114,40 +148,49 @@
 
   <!-- 9. BOTÓN FLOTANTE DE WHATSAPP -->
   <!-- 10. CARRITO DE COMPRAS -->
-  <button id="cart-btn" class="cart-btn" aria-label="Abrir carrito">🛒 <span id="cart-count">0</span></button>
+  <button id="cart-btn" class="cart-btn" aria-label="Abrir carrito" data-i18n-aria="openCart">🛒 <span
+      id="cart-count">0</span></button>
   <div id="overlay" class="overlay"></div>
-  <aside id="cart" class="cart" aria-label="Carrito">
+  <aside id="cart" class="cart" aria-label="Carrito" data-i18n-aria="cart">
     <div class="cart-head">
-      <h3>Tu pedido</h3><button id="cart-close" aria-label="Cerrar">✕</button>
+      <h3 data-i18n="yourOrder">Tu pedido</h3><button id="cart-close" aria-label="Cerrar"
+        data-i18n-aria="close">✕</button>
     </div>
     <div id="cart-items" class="cart-items"></div>
     <div class="cart-foot">
-      <div class="total"><span>Subtotal</span><b id="cart-subtotal"></b></div>
-      <label class="tip-label" for="o-tip">¿Deseas agregar propina?</label>
+      <div class="total"><span data-i18n="subtotal">Subtotal</span><b id="cart-subtotal"></b></div>
+      <label class="tip-label" for="o-tip" data-i18n="tipPrompt">¿Deseas agregar propina?</label>
       <select id="o-tip" aria-label="Propina">
-        <option value="0">Sin propina</option>
+        <option value="0" data-i18n="noTip">Sin propina</option>
         <option value="5">5%</option>
         <option value="10">10%</option>
       </select>
-      <div class="total"><span>Propina</span><b id="cart-tip"></b></div>
-      <div class="total"><span>Total</span><b id="cart-total"></b></div>
-      <input id="o-name" placeholder="Tu nombre">
+      <div class="total"><span data-i18n="tip">Propina</span><b id="cart-tip"></b></div>
+      <div class="total"><span data-i18n="total">Total</span><b id="cart-total"></b></div>
+      <input id="o-name" placeholder="Tu nombre" data-i18n-placeholder="yourName">
       <select id="o-local" required aria-label="Elige el local"></select>
       <select id="o-type">
-        <option value="Recoger en tienda">Recoger en tienda</option>
-        <option value="A domicilio">A domicilio</option>
+        <option value="Recoger en tienda" data-i18n="pickup">Recoger en tienda</option>
+        <option value="A domicilio" data-i18n="delivery">A domicilio</option>
       </select>
-      <input id="o-addr" placeholder="Dirección de entrega" hidden>
-      <textarea id="o-note" rows="2" placeholder="Notas (sin azúcar, leche de avena...)"></textarea>
-      <p class="payment-note">El pago de pedidos en línea es por transferencia bancaria.</p>
+      <input id="o-addr" placeholder="Dirección de entrega" data-i18n-placeholder="deliveryAddress" hidden>
+      <button id="o-location" class="location-button" type="button" hidden data-i18n="useLocation">Usar mi ubicación
+        actual</button>
+      <a id="o-map" class="map-link" target="_blank" rel="noopener" hidden data-i18n="viewMap">Ver ubicación en Google
+        Maps</a>
+      <p id="o-location-status" class="location-status" role="status" aria-live="polite"></p>
+      <textarea id="o-note" rows="2" placeholder="Notas (sin azúcar, leche de avena...)"
+        data-i18n-placeholder="orderNotes"></textarea>
+      <p class="payment-note" data-i18n="onlinePayment">El pago de pedidos en línea es por transferencia bancaria.</p>
       <div class="transfer-details" id="transfer-details" aria-label="Datos para transferencia bancaria"></div>
-      <p class="payment-note">Se abrirá WhatsApp con el pedido listo. Para enviarlo, presiona Enviar en WhatsApp.</p>
-      <button id="o-send" class="btn">Continuar a WhatsApp</button>
-      <button id="o-clear" class="link">Vaciar carrito</button>
+      <p class="payment-note" data-i18n="whatsAppHelp">Se abrirá WhatsApp con el pedido listo. Para enviarlo, presiona
+        Enviar en WhatsApp.</p>
+      <button id="o-send" class="btn" data-i18n="continueWhatsApp">Continuar a WhatsApp</button>
+      <button id="o-clear" class="link" data-i18n="clearCart">Vaciar carrito</button>
     </div>
   </aside>
 
-  <a id="wa" class="wa" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+  <a id="wa" class="wa" target="_blank" rel="noopener" aria-label="WhatsApp" data-i18n-aria="whatsApp">💬</a>
 
   <script src="java.js"></script>
 </body>
