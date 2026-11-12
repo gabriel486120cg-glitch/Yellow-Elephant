@@ -21,14 +21,15 @@ const CONFIG = {
     promociones: "No hay promociones publicadas por el momento. Escríbenos por WhatsApp para consultar las promociones disponibles.",
     locales: [
         {
-            nombre: "Elefante Sur",
-            direccion: "Kilómetro 12.5, Carretera Sur, contiguo al Salón Vanity",
+            nombre: "Elefante Amarillo Carretera Sur",
+            direccion: "Cafetería Elefante Amarillo, kilómetro 12.5, Carretera Sur, contiguo al Salón Vanity",
             maps: "https://maps.app.goo.gl/iL9VMry4ecxjkxFN6?g_st=aw",
             waze: "https://waze.com/ul?q=km%2012.5%20Carretera%20Sur%20contiguo%20al%20Salon%20Vanity%2C%20Nicaragua&navigate=yes"
         },
         {
             nombre: "Elefante Galerías Santo Domingo",
             direccion: "Galerías Santo Domingo",
+            whatsapp: "+505 81433012",
             maps: "https://maps.app.goo.gl/rfJgQGXpPxSRphpJ9?g_st=aw",
             waze: "https://waze.com/ul?q=Elefante%20Galerias%20Santo%20Domingo%2C%20Managua%2C%20Nicaragua&navigate=yes"
         }
@@ -156,6 +157,7 @@ const translations = {
         yourOrder: "Tu pedido", close: "Cerrar", subtotal: "Subtotal", tipPrompt: "¿Deseas agregar propina?",
         noTip: "Sin propina", tip: "Propina", total: "Total", pickup: "Recoger en tienda", delivery: "A domicilio",
         deliveryAddress: "Dirección de entrega", useLocation: "Usar mi ubicación actual",
+        deliveryOrigin: "Punto de partida del repartidor",
         viewMap: "Ver ubicación en Google Maps", orderNotes: "Notas (sin azúcar, leche de avena...)",
         onlinePayment: "El pago de pedidos en línea es por transferencia bancaria.",
         whatsAppHelp: "Se abrirá WhatsApp con el pedido listo. Para enviarlo, presiona Enviar en WhatsApp.",
@@ -203,6 +205,7 @@ const translations = {
         yourOrder: "Your order", close: "Close", subtotal: "Subtotal", tipPrompt: "Would you like to add a tip?",
         noTip: "No tip", tip: "Tip", total: "Total", pickup: "Pickup", delivery: "Delivery",
         deliveryAddress: "Delivery address", useLocation: "Use my current location",
+        deliveryOrigin: "Courier starting point",
         viewMap: "View location on Google Maps", orderNotes: "Notes (no sugar, oat milk...)",
         onlinePayment: "Online orders are paid by bank transfer.",
         whatsAppHelp: "WhatsApp will open with your order ready. Press Send in WhatsApp to place it.",
@@ -272,8 +275,8 @@ try {
     console.warn("No se pudo recuperar el idioma guardado:", error);
 }
 const numeroWhatsApp = CONFIG.whatsapp.replace(/\D/g, "");
-function abrirWhatsApp(texto) {
-    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(texto)}`;
+function abrirWhatsApp(texto, numero = CONFIG.whatsapp) {
+    const url = `https://wa.me/${numero.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
     const nuevaVentana = window.open(url, "_blank");
     if (!nuevaVentana) window.location.href = url;
 }
@@ -767,12 +770,13 @@ $("o-send").onclick = () => {
     const propina = calcularPropina(subtotal);
     const total = subtotal + propina;
     const msg = [`☕ *${texto("orderTitle")} — ${CONFIG.nombre}*`,
-    `🏬 ${texto("chooseBranch")}: ${local.nombre}`,
+    `🏬 ${texto("chooseBranch")}: ${local.nombre} — ${local.direccion}`,
     `👤 ${texto("customer")}: ${$("o-name").value.trim() || texto("noName")}`,
     `📦 ${texto("orderType")}: ${$("o-type").selectedOptions[0].textContent}`,
     `💳 ${texto("paymentMethod")}`,
     `🏦 ${texto("bank")}: ${CONFIG.transferencia.banco} — ${CONFIG.transferencia.moneda}`,
     `🔢 ${texto("account")}: ${CONFIG.transferencia.cuenta}`,
+    domicilio ? `🚴 ${texto("deliveryOrigin")}: ${local.nombre} — ${local.direccion} (${local.maps})` : "",
     domicilio ? `📍 ${texto("address")}: ${$("o-addr").value.trim()}` : "",
     domicilio && ubicacionEntrega ? `📌 ${texto("coordinates")}: ${ubicacionEntrega.coordenadas}` : "",
     domicilio && ubicacionEntrega ? `🎯 ${texto("accuracy")}: ±${ubicacionEntrega.precision} m` : "",
@@ -783,7 +787,7 @@ $("o-send").onclick = () => {
     `💰 *Total: ${precio(total)}*`,
     $("o-note").value.trim() ? `📝 ${texto("notes")}: ${$("o-note").value.trim()}` : ""
     ].filter((l, k, a) => l !== "" || (a[k - 1] !== "" && k)).join("\n");
-    abrirWhatsApp(msg);
+    abrirWhatsApp(msg, local.whatsapp || CONFIG.whatsapp);
 };
 pintarCarrito();
 traducirPagina();

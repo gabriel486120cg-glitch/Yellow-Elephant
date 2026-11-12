@@ -67,6 +67,7 @@ a {
 .logo {
   display: flex;
   align-items: center;
+  gap: .55rem;
   font-weight: bold;
   font-size: 1.25rem;
   text-decoration: none;
@@ -689,6 +690,15 @@ footer {
 
 /* Responsive (celular) */
 @media(max-width:760px) {
+  .logo {
+    gap: .35rem;
+    font-size: 1rem
+  }
+
+  .logo img {
+    width: 40px
+  }
+
   #burger {
     display: block
   }
